@@ -59,8 +59,14 @@
         android:gravity="center"
         android:text="BELIEVES IN SUSTAINABLE CONTINUOUS DEVELOPMENT"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-        tools:fontFamily="serif" />
+        tools:fontFamily="serif"
+        android:textSize="12sp" />
 
+    //remove below space and place your element
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight="0.20"/>
     <EditText
         android:id="@+id/edt_login_user"
         android:layout_width="match_parent"
@@ -72,8 +78,8 @@
         android:textAlignment="center" />
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_weight="0.20"/>
+        android:layout_height="10dp"
+        android:layout_weight="0.10"/>
     <EditText
         android:id="@+id/edi_login_password"
         android:layout_width="match_parent"
@@ -86,8 +92,8 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_weight="0.30"/>
+        android:layout_height="15dp"
+        android:layout_weight="0.15"/>
 
     <Button
         android:id="@+id/btn_login_login"
@@ -109,7 +115,7 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="16dp"
-        android:layout_weight="0.20" />
+        android:layout_weight="0.10" />
 
     <TextView
         android:id="@+id/txt_main_forgotpsw"
@@ -118,7 +124,7 @@
         android:layout_margin="10dp"
         android:layout_marginTop="100dp"
         android:layout_weight="0.10"
-        android:text="Forget Password ?"
+        android:text="Forgot Password ?"
         android:textAlignment="center"
         android:textSize="14sp"
         android:textStyle="normal|bold" />
@@ -138,7 +144,8 @@
         android:layout_weight="0.10"
         android:text="Developed by Masco MIS &amp; SD"
         android:textAlignment="center"
-        android:textSize="10sp" />
+
+        android:textSize="10sp"/>
 
 </LinearLayout>
 
