@@ -3,15 +3,14 @@
     package="masco.mis.software.mascoapproval">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".Tapplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
@@ -21,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".HomeActivity"></activity>
     </application>
 
 </manifest>

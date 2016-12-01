@@ -1,5 +1,4 @@
-    package masco.mis.software.mascoapproval;
-
+package masco.mis.software.mascoapproval;
 
 
 import android.app.Activity;
@@ -13,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -54,13 +54,10 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String lTest = Tapplication.Pref().getString(getString(R.string.pref_login_data),"");
-        if( lTest != null ||!lTest.isEmpty())
-        {
+        String lTest = Tapplication.Pref().getString(getString(R.string.pref_login_data), "");
+        if (lTest != null || !lTest.isEmpty()) {
 
-        }
-        else
-        {
+        } else {
 
         }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -79,42 +76,17 @@ public class LoginActivity extends Activity {
                     pDialog.setCancelable(false);
                     pDialog.show();
                     JSONObject json = new JSONObject();
-////                    json.put("id", ((EditText) findViewById(R.id.edt_login_user)).getText().toString());
-////                    json.put("pass", ((EditText) findViewById(R.id.edi_login_password)).getText().toString());
-//                    Map<String, String> mp = new HashMap();
-//
-//                    mp.put("@id", ((EditText) findViewById(R.id.edt_login_user)).getText().toString());
-//                    mp.put("@pass", ((EditText) findViewById(R.id.edi_login_password)).getText().toString());
-//                    JSONObject id = new JSONObject();
-//                    id.put("@id",((EditText) findViewById(R.id.edt_login_user)).getText().toString());
-//                    JSONObject pass = new JSONObject();
-//                    pass.put("@pass",((EditText) findViewById(R.id.edi_login_password)).getText().toString());
-//                    json.put("db", getString(R.string.DB_SCM));
-//                    json.put("sp", "usp_m_login");
-//                  //  json.put("sp","test_api");
-//                    JSONArray ss = new JSONArray();
-//                    ss.put(id);
-//                    ss.put(pass);
-//                    json.put("dict", ss);
                     TRequest tRequest = new TRequest();
                     tRequest.setSp("usp_m_login");
                     tRequest.setDb(getString(R.string.DB_SCM));
                     List<TParam> tParamList = new ArrayList<TParam>();
-                    tParamList.add(new TParam("@id",((EditText) findViewById(R.id.edt_login_user)).getText().toString()));
-                    tParamList.add(new TParam("@pass",((EditText) findViewById(R.id.edi_login_password)).getText().toString()));
+                    tParamList.add(new TParam("@id", ((EditText) findViewById(R.id.edt_login_user)).getText().toString()));
+                    tParamList.add(new TParam("@pass", ((EditText) findViewById(R.id.edi_login_password)).getText().toString()));
                     tRequest.setDict(tParamList);
                     Gson gson = new Gson();
-                    json = new JSONObject(gson.toJson(tRequest,TRequest.class));
-
-
-
-
-
-        //            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, getString(R.string.api_v1_get_data), json, loginListener(), genericErrorListener());
-                   //http://192.168.2.72/TWebApiSearch/api/v1/TService/GetData
+                    json = new JSONObject(gson.toJson(tRequest, TRequest.class));
                     Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Method.POST, "http://192.168.2.72/TWebApiSearch/api/v1/TService/GetData", json, loginListener(), genericErrorListener()));
-                 //   Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Method.POST, getString(R.string.api_v1_get_data), json, loginListener(), genericErrorListener()));
-               //    Tapplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    //   Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Method.POST, getString(R.string.api_v1_get_data), json, loginListener(), genericErrorListener()));
 
 
                 } catch (Exception ex) {
@@ -141,41 +113,28 @@ public class LoginActivity extends Activity {
                         pDialog.dismiss();
                     }
                 }
-                Toasts.biscuit(getApplicationContext(),error.getMessage(), Color.RED);
                 try {
                     if (error instanceof NoConnectionError) {
-                        //   tvValidationMessage.setText(getString(R.string.txt_login_internet));
+
+                        ((TextView) findViewById(R.id.tv_login_status)).setText("No Connection");
 
                     } else if (error instanceof NetworkError) {
-                        //    tvValidationMessage.setText(getString(R.string.txt_login_network_error));
 
+                        ((TextView) findViewById(R.id.tv_login_status)).setText("Network Error");
                     } else if (error instanceof ServerError) {
-                        //   tvValidationMessage.setText(getString(R.string.txt_login_server));
+                        ((TextView) findViewById(R.id.tv_login_status)).setText("Server Errpr");
                     } else if (error instanceof TimeoutError) {
-                        //    tvValidationMessage.setText(getString(R.string.txt_login_time_out));
+                        ((TextView) findViewById(R.id.tv_login_status)).setText("Timneout");
                     } else if (error instanceof VolleyError) {
                         try {
-                            //           tvValidationMessage
-                            //                  .setText(getString(R.string.txt_login_volley_error) + " " + error.getMessage());
+                            ((TextView) findViewById(R.id.tv_login_status)).setText("Volley Error");
                         } catch (Exception e) {
-                            //           tvValidationMessage.setText(getString(R.string.txt_login_internet));
+
                         }
                     }
 
-                    // tvValidationMessage.setText(error.toString());
-                    // tvValidationMessage
-                    // .setText("Code :" + error.networkResponse.statusCode +
-                    // "\nNetwork Error\nPlease Try Again");
-                    // Toast.makeText(getApplicationContext(),
-                    // "Code :" + error.networkResponse.statusCode + "\nNetwork
-                    // Error\nPlease Try Again",
-                    // Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
-                    // tvValidationMessage.setText("No internet connection available\n" + error.getMessage());
-                    // Toast.makeText(getApplicationContext(),
-                    // Toast.makeText(getApplicationContext(), "No internet
-                    // connection available\n" + error.getMessage(),
-                    // Toast.LENGTH_LONG).show();
+                    ((TextView) findViewById(R.id.tv_login_status)).setText("Error");
                 }
             }
 
@@ -190,13 +149,20 @@ public class LoginActivity extends Activity {
                     if (pDialog.isShowing()) {
                         pDialog.dismiss();
                     }
-                    Tapplication.Pref().edit().putString(getString(R.string.pref_login_data),response.toString()).apply();
+                    Gson Res = new Gson();
 
-                    Toast.makeText(getApplicationContext(),
-                            response.toString(),
-                            Toast.LENGTH_LONG).show();
+                    JSONArray data = response.getJSONArray("data");
+                    if (data.length() > 0) {
+                        Tapplication.Pref().edit().putString(getString(R.string.pref_login_data), response.toString()).apply();
+                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                        ((TextView) findViewById(R.id.tv_login_status)).setText("Invalid Credentials");
+                    }
+
                 } catch (Exception e) {
-                    Log.v("mango",e.getMessage());
+                    Log.v("mango", e.getMessage());
+                    ((TextView) findViewById(R.id.tv_login_status)).setText(e.getMessage());
                 }
             }
         };

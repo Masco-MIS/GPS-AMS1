@@ -75,9 +75,7 @@ public class Tapplication extends Application {
         }
     }
 
-    public static void setPref() {
 
-    }
 
     public static SharedPreferences Pref() {
         if (sharedPref == null) {
