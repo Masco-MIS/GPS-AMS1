@@ -13,6 +13,7 @@ public class ChatWeiget {
     public String txtMiddle;
     public String txtBottom;
     public String txtTopRight;
+    public String txtdateTime;
 
     public ChatWeiget() {
     }
