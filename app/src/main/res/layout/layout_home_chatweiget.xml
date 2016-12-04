@@ -1,54 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_chatweiget"
+    android:orientation="horizontal"
 
+    >
 
-    <ImageView
-        android:src="@drawable/ic_approval"
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/img_home_employee"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:src="@mipmap/p50x50"
+
+
+        android:layout_margin="4dp"
+
+        app:riv_corner_radius="30dip"
+        app:riv_border_width="2dip"
+        app:riv_border_color="#333333"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:riv_oval="false"
+        android:scaleType="centerCrop" />
+
+
+
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center|top"
-        >
+        android:layout_gravity="left"
+        android:layout_margin="4dp"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/txt_chatweiget_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.10"
             android:fontFamily="sans-serif"
-            android:gravity="center"
             android:text="First Line"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:textSize="18sp" />
+
         <TextView
             android:id="@+id/txt_chatweiget_middle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.10"
             android:fontFamily="sans-serif"
-            android:gravity="center"
             android:text="Middle Line"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
             android:textSize="14sp" />
+
         <TextView
             android:id="@+id/txt_chatweiget_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.10"
             android:fontFamily="sans-serif"
-            android:gravity="center"
             android:text="Bottom Line"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
             android:textSize="12sp" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="right"
+
+        >
+
+
+        <TextView
+            android:id="@+id/txt_chatweiget_topRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            />
+    </LinearLayout>
 
 
 </LinearLayout>
