@@ -25,6 +25,8 @@ import com.google.android.gms.location.LocationServices;
 import java.text.DateFormat;
 import java.util.Date;
 
+import masco.mis.software.mascoapproval.pojo.TRequest;
+
 /**
  * Created by TahmidH_MIS on 12/3/2016.
  */
@@ -241,15 +243,27 @@ public class LocationTService extends Service implements
         // user launches the activity,
         // moves to a new location, and then changes the device orientation, the original location
         // is displayed as the activity is re-created.
-        if (mCurrentLocation == null) {
-            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            //  updateUI();
-            Toast.makeText(this, "Inside IF",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Inside ESLE",
-                    Toast.LENGTH_SHORT).show();
+        try {
+            if (mCurrentLocation == null) {
+
+
+                if (Build.VERSION.SDK_INT < 23) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    }
+                } else {
+                    mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                }
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+                //  updateUI();
+                Toast.makeText(this, "Inside IF",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Inside ESLE",
+                        Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+
         }
 
 
@@ -270,6 +284,9 @@ public class LocationTService extends Service implements
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         Toast.makeText(this, mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude(),
                 Toast.LENGTH_SHORT).show();
+        TRequest tRequest = new TRequest();
+//        Tapplication.getContext().getResources().getString(android.R.string.SCM)
+//        tRequest.setDb(getResources().getString(android.R.string.DB_SCM));
 //        updateUI();
 //        Toast.makeText(this, getResources().getString(R.string.location_updated_message),
 //                Toast.LENGTH_SHORT).show();
