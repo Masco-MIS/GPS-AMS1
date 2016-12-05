@@ -1,11 +1,13 @@
 package masco.mis.software.mascoapproval;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.view.Window;
+import android.view.WindowManager;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -15,13 +17,36 @@ import com.android.volley.toolbox.Volley;
  */
 
 public class Tapplication extends Application {
-    private RequestQueue mRequestQueue;
-    private static Tapplication mInstance;
     public static final String TAG = Tapplication.class.getSimpleName();
     private static final int MY_SOCKET_TIMEOUT_MS = 120000;
+    public static String PrefName;
+    private static Tapplication mInstance;
     private static Context mContext;
     private static SharedPreferences sharedPref;
-    public static String PrefName;
+    private RequestQueue mRequestQueue;
+
+    public static Context getContext() {
+        return mContext;
+    }
+
+    public static synchronized Tapplication getInstance() {
+
+        return mInstance;
+    }
+
+    public static SharedPreferences Pref() {
+        if (sharedPref == null) {
+            sharedPref = mContext.getSharedPreferences(PrefName, Context.MODE_PRIVATE);
+        }
+        return sharedPref;
+
+    }
+
+    public static void FullScreen(Activity activity) {
+        activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 
     @Override
 
@@ -35,15 +60,6 @@ public class Tapplication extends Application {
         PrefName = getString(R.string.Pref);
 
 
-    }
-
-    public static Context getContext() {
-        return mContext;
-    }
-
-    public static synchronized Tapplication getInstance() {
-
-        return mInstance;
     }
 
     public RequestQueue getRequestQueue() {
@@ -73,16 +89,6 @@ public class Tapplication extends Application {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
-    }
-
-
-
-    public static SharedPreferences Pref() {
-        if (sharedPref == null) {
-            sharedPref = mContext.getSharedPreferences(PrefName, Context.MODE_PRIVATE);
-        }
-        return sharedPref;
-
     }
 
 

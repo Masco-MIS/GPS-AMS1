@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import masco.mis.software.mascoapproval.pojo.ChatWeiget;
 
@@ -14,6 +13,7 @@ public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Tapplication.FullScreen(this);
         setContentView(R.layout.activity_home);
         populateChatList();
 

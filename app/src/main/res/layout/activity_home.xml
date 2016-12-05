@@ -5,68 +5,68 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
-    android:background="#5C6BC0"
     android:layout_alignParentStart="true"
+    android:background="#5C6BC0"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="masco.mis.software.mascoapproval.HomeActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
+    <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center|top"
-        >
+        android:orientation="horizontal">
 
 
         <ImageButton
-            android:src="@drawable/ic_message"
-            android:layout_width="50dp"
-                android:layout_height="50dp"
             android:id="@+id/btn_home_message"
-            />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_message" />
 
         <ImageButton
-            android:src="@drawable/ic_approval"
+            android:id="@+id/btn_home_approval"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/btn_home_approval" />
+            android:src="@drawable/ic_approval" />
 
         <ImageButton
-            android:src="@drawable/ic_voicecall"
+            android:id="@+id/btn_home_voicecall"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/btn_home_voicecall" />
+            android:src="@drawable/ic_voicecall" />
+
         <ImageButton
-            android:src="@drawable/ic_chart"
+            android:id="@+id/btn_home_chart"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/btn_home_chart" />
+            android:src="@drawable/ic_chart" />
+
         <ImageButton
-            android:src="@drawable/ic_operation"
+            android:id="@+id/btn_home_operation"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/btn_home_operation" />
+            android:src="@drawable/ic_operation" />
     </LinearLayout>
 
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Search"
-        android:background="#FFF"
         android:layout_margin="10dp"
+        android:background="#FFF"
         android:elevation="10dp"
+        android:title="Search"
 
         />
 
     <ListView
+        android:id="@+id/lv_home_chatlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lv_home_chatlist"
-        android:dividerHeight="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        >
+        android:dividerHeight="3dp">
 
     </ListView>
 </LinearLayout>
