@@ -16,4 +16,9 @@
     <string name="Pref">MisterT</string>
     <string name="pref_login_data">login_data</string>
 
+    <!--sp-->
+    <string name="update_location">usp_m_set_location</string>
+    <!--sp-->
+
+
 </resources>

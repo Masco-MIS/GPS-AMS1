@@ -51,7 +51,8 @@ public class Tapplication extends Application {
 
     public static String ID() {
         try {
-            return Settings.Secure.ANDROID_ID;
+            // return Settings.Secure.ANDROID_ID;
+            return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         } catch (Exception e) {
             return "NA";
         }

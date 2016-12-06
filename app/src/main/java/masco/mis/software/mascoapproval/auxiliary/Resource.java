@@ -5,8 +5,8 @@ package masco.mis.software.mascoapproval.auxiliary;
  */
 
 public class Resource {
-//    public static String getString(String name)
-//    {
-//      //  Tapplication.getContext().getString(android.R.)
-//    }
+    public static String getString(String name) {
+        //Tapplication.getContext().getString(Resource.getString())
+        return "";
+    }
 }
