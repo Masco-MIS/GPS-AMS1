@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
@@ -46,6 +47,15 @@ public class Tapplication extends Application {
         activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    public static String ID() {
+        try {
+            // return Settings.Secure.ANDROID_ID;
+            return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        } catch (Exception e) {
+            return "NA";
+        }
     }
 
     @Override
