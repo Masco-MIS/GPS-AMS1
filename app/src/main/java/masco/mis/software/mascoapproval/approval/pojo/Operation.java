@@ -8,6 +8,15 @@ public class Operation {
     public String att1;
     public String att2;
     public String att3;
+    public boolean att4;
+
+    public boolean isAtt4() {
+        return att4;
+    }
+
+    public void setAtt4(boolean att4) {
+        this.att4 = att4;
+    }
 
     public String getAtt1() {
         return att1;

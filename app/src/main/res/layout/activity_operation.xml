@@ -80,11 +80,12 @@
         <ListView
             android:id="@+id/listview_operation_list"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="320dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:dividerHeight="6dp"
 
-            android:dividerHeight="3dp">
+            android:minHeight="300dp">
 
         </ListView>
 

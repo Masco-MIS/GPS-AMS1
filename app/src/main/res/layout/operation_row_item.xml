@@ -52,7 +52,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="30dp"
-        android:checked="true" />
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
 
 </LinearLayout>
