@@ -4,7 +4,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkError;
@@ -29,9 +35,28 @@ import masco.mis.software.mascoapproval.approval.pojo.Operation;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
-public class OperationActivity extends Activity {
+public class OperationActivity extends Activity implements AdapterView.OnItemClickListener {
     ListView lstView;
+    ArrayAdapter<Operation> adapter;
+    List<Operation> list = new ArrayList<Operation>();
     ProgressDialog pDialog;
+
+    @Override
+    public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+        TextView t1 = (TextView) v.getTag(R.id.im_operation_row_item_t1);
+        TextView t2 = (TextView) v.getTag(R.id.im_operation_row_item_t2);
+        TextView t3 = (TextView) v.getTag(R.id.im_operation_row_item_t3);
+        ImageButton imForward = (ImageButton) v.getTag(R.id.im_operation_row_item_forward);
+        CheckBox checkbox = (CheckBox) v.getTag(R.id.im_operation_row_item_check);
+
+    }
+
+    private String isCheckedOrNot(CheckBox checkbox) {
+        if (checkbox.isChecked())
+            return "is checked";
+        else
+            return "is not checked";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +66,7 @@ public class OperationActivity extends Activity {
 
 
         lstView = (ListView) findViewById(R.id.listview_operation_list);
+        //lstView.setOnItemClickListener(this);
         try {
 //            pDialog = new ProgressDialog(OperationActivity.this);
 //            pDialog.setMessage("Please wait...");
@@ -120,7 +146,7 @@ public class OperationActivity extends Activity {
                         pDialog.dismiss();
                     }
                     Gson Res = new Gson();
-                    List<Operation> lstData = new ArrayList<>();
+                    List<Operation> lstData = new ArrayList<Operation>();
                     JSONArray data = response.getJSONArray("data");
                     if (data.length() > 0) {
                         for (int i = 0; i < data.length(); i++) {
@@ -129,9 +155,13 @@ public class OperationActivity extends Activity {
                             operation.setAtt1(j.getString("Att1"));
                             operation.setAtt2(j.getString("Att2"));
                             operation.setAtt3(j.getString("Att3"));
+                            operation.setAtt4(true);
                             lstData.add(operation);
                         }
-                        lstView.setAdapter(new OperationAdapter(OperationActivity.this, lstData.toArray(new Operation[lstData.size()])));
+                        adapter = new OperationAdapter(OperationActivity.this, lstData);
+                        //    lstView.setAdapter(new OperationAdapter(OperationActivity.this, lstData));
+                        lstView.setAdapter(adapter);
+                        lstView.setOnItemClickListener(OperationActivity.this);
 
                     } else {
 
