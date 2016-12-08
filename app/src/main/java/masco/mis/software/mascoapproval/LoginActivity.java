@@ -50,6 +50,12 @@ public class LoginActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+        String priData = Tapplication.Pref().getString(getString(R.string.pref_login_data), "");
+        if (priData.length() > 0) {
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         findViewById(R.id.btn_login_login).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +148,7 @@ public class LoginActivity extends Activity {
                         Tapplication.Pref().edit().putString(getString(R.string.pref_login_data), response.toString()).apply();
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         ((TextView) findViewById(R.id.tv_login_status)).setText("Invalid Credentials");
                     }

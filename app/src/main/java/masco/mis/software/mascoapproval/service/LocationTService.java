@@ -232,10 +232,14 @@ public class LocationTService extends Service implements
     protected void startLocationUpdates() {
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(
                         mGoogleApiClient, mLocationRequest, this);
+            }
+            else
+            {
+                Toast.makeText(this, "Please Provide Permission", Toast.LENGTH_SHORT).show();
             }
         } else {
             LocationServices.FusedLocationApi.requestLocationUpdates(
@@ -263,7 +267,7 @@ public class LocationTService extends Service implements
             if (mCurrentLocation == null) {
 
 
-                if (Build.VERSION.SDK_INT < 23) {
+                if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     }
