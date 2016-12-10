@@ -4,48 +4,34 @@ package masco.mis.software.mascoapproval;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
-import com.android.volley.Request;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
-import masco.mis.software.mascoapproval.pojo.TResult;
 
 public class LoginActivity extends Activity {
 
@@ -64,8 +50,14 @@ public class LoginActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+        String priData = Tapplication.Pref().getString(getString(R.string.pref_login_data), "");
+        if (priData.length() > 0) {
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
-        ((Button) findViewById(R.id.btn_login_login)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_login_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -134,7 +126,7 @@ public class LoginActivity extends Activity {
                     }
 
                 } catch (Exception e) {
-                    ((TextView) findViewById(R.id.tv_login_status)).setText("Error");
+                    //  ((TextView) findViewById(R.id.tv_login_status)).setText("Error");
                 }
             }
 
@@ -154,8 +146,9 @@ public class LoginActivity extends Activity {
                     JSONArray data = response.getJSONArray("data");
                     if (data.length() > 0) {
                         Tapplication.Pref().edit().putString(getString(R.string.pref_login_data), response.toString()).apply();
-                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         ((TextView) findViewById(R.id.tv_login_status)).setText("Invalid Credentials");
                     }
