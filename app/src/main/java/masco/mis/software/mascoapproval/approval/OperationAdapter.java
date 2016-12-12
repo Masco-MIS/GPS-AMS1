@@ -1,18 +1,25 @@
 package masco.mis.software.mascoapproval.approval;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import masco.mis.software.mascoapproval.R;
+import masco.mis.software.mascoapproval.Tapplication;
+import masco.mis.software.mascoapproval.Toasts;
 import masco.mis.software.mascoapproval.approval.pojo.Operation;
 
 /**
@@ -59,6 +66,27 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
             viewHolder.t2.setText(values.get(position).att2);
             viewHolder.t3.setText(values.get(position).att3);
             viewHolder.imForward = (ImageButton) convertView.findViewById(R.id.im_operation_row_item_forward);
+
+            viewHolder.imForward.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ListView mListView = (ListView) view.getParent().getParent();
+                    final int position = mListView.getPositionForView((View) view.getParent());
+                    Toast.makeText(Tapplication.getContext(), "Test :" + values.get(position).getAtt2(), Toast.LENGTH_SHORT).show();
+                    final Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.dialog_forward_to);
+                    dialog.setTitle("Forwarding.....");
+                    ((Button) dialog.findViewById(R.id.btn_dialog_cancel)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+
+
+                }
+            });
             convertView.setTag(viewHolder);
             convertView.setTag(R.id.im_operation_row_item_t1, viewHolder.t1);
             convertView.setTag(R.id.im_operation_row_item_t2, viewHolder.t2);
