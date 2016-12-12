@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:background="#5C6BC0"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="masco.mis.software.mascoapproval.approval.ApprovalType">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/btn_home_message"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_message" />
+
+        <ImageButton
+            android:id="@+id/btn_home_approval"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_approval" />
+
+        <ImageButton
+            android:id="@+id/btn_home_voicecall"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_voicecall" />
+
+        <ImageButton
+            android:id="@+id/btn_home_chart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_chart" />
+
+        <ImageButton
+            android:id="@+id/btn_home_operation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_operation" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="50dp"
+
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/btn_approvaltype_pr"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/pencil_button_new"
+                android:gravity="start|center"
+                android:paddingLeft="10dp"
+                android:text="Purchase Requisition"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+
+            <Button
+                android:id="@+id/btn_approvaltype_sr"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/pencil_button_new"
+                android:gravity="start|center"
+                android:paddingLeft="10dp"
+                android:text="Store Requisition"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+
+            <Button
+                android:id="@+id/btn_approvaltype_la"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/pencil_button_new"
+                android:gravity="start|center"
+                android:paddingLeft="10dp"
+                android:text="Leave Approval"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
+

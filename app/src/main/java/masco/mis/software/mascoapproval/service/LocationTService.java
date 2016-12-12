@@ -14,6 +14,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -21,10 +29,18 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import masco.mis.software.mascoapproval.Tapplication;
+import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
 /**
@@ -37,7 +53,7 @@ public class LocationTService extends Service implements
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 30000;
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
      * than this value.
@@ -216,10 +232,14 @@ public class LocationTService extends Service implements
     protected void startLocationUpdates() {
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(
                         mGoogleApiClient, mLocationRequest, this);
+            }
+            else
+            {
+                Toast.makeText(this, "Please Provide Permission", Toast.LENGTH_SHORT).show();
             }
         } else {
             LocationServices.FusedLocationApi.requestLocationUpdates(
@@ -247,7 +267,7 @@ public class LocationTService extends Service implements
             if (mCurrentLocation == null) {
 
 
-                if (Build.VERSION.SDK_INT < 23) {
+                if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     }
@@ -284,8 +304,27 @@ public class LocationTService extends Service implements
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         Toast.makeText(this, mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude(),
                 Toast.LENGTH_SHORT).show();
-        TRequest tRequest = new TRequest();
-//        Tapplication.getContext().getResources().getString(android.R.string.SCM)
+        try {
+            TRequest tRequest = new TRequest();
+            tRequest.setDb("SCM");
+            tRequest.setSp("usp_m_set_location");
+            List<TParam> tParamList = new ArrayList<TParam>();
+
+            tParamList.add(new TParam("@EmpID", "44580"));
+            tParamList.add(new TParam("@DeviceID", Tapplication.ID()));
+
+            tParamList.add(new TParam("@Lat", Double.toString(mCurrentLocation.getLatitude())));
+            tParamList.add(new TParam("@Lon", Double.toString(mCurrentLocation.getLongitude())));
+            tParamList.add(new TParam("@Time", String.valueOf(DateFormat.getDateTimeInstance().format(new Date()))));
+            tRequest.setDict(tParamList);
+            String urls = "http://192.168.2.72/TWebApiSearch/api/v1/TService/SetData";
+            JSONObject json = new JSONObject();
+            json = new JSONObject(new Gson().toJson(tRequest, TRequest.class));
+            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, "http://192.168.2.72/TWebApiSearch/api/v1/TService/SaveData", json, loginListener(), genericErrorListener()));
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
 //        tRequest.setDb(getResources().getString(android.R.string.DB_SCM));
 //        updateUI();
 //        Toast.makeText(this, getResources().getString(R.string.location_updated_message),
@@ -349,5 +388,56 @@ public class LocationTService extends Service implements
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private Response.ErrorListener genericErrorListener() {
+        return new Response.ErrorListener() {
+
+            public void onErrorResponse(VolleyError error) {
+
+                try {
+                    if (error instanceof NoConnectionError) {
+
+
+                    } else if (error instanceof NetworkError) {
+
+
+                    } else if (error instanceof ServerError) {
+
+                    } else if (error instanceof TimeoutError) {
+
+                    } else if (error instanceof VolleyError) {
+                        try {
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+
+                } catch (Exception e) {
+
+                }
+            }
+
+        };
+    }
+
+    private Response.Listener<JSONObject> loginListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    Gson Res = new Gson();
+
+                    JSONArray data = response.getJSONArray("data");
+                    Toast.makeText(LocationTService.this, response.toString(), Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    Log.v("mango", e.getMessage());
+
+                }
+            }
+        };
     }
 }

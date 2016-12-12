@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000080"
+    android:gravity="fill"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/im_operation_row_item_forward"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:scaleType="centerInside"
+        android:src="@drawable/forword" />
+
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/im_operation_row_item_t1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MPO-1611161001"
+            android:textAllCaps="true"
+            android:textColor="#f5f5f5" />
+
+        <TextView
+            android:id="@+id/im_operation_row_item_t2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A6806"
+            android:textAllCaps="true"
+            android:textColor="#f5f5f5" />
+
+        <TextView
+            android:id="@+id/im_operation_row_item_t3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masco Cottons Ltd"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+    </LinearLayout>
+
+
+    <CheckBox
+        android:id="@+id/im_operation_row_item_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="30dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+
+</LinearLayout>

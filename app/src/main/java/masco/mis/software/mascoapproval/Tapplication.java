@@ -2,6 +2,7 @@ package masco.mis.software.mascoapproval;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings;
@@ -51,10 +52,21 @@ public class Tapplication extends Application {
 
     public static String ID() {
         try {
-            return Settings.Secure.ANDROID_ID;
+            // return Settings.Secure.ANDROID_ID;
+            return Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         } catch (Exception e) {
             return "NA";
         }
+    }
+
+    public static ProgressDialog pleaseWait(Activity activity, String msg) {
+        ProgressDialog pDialog = new ProgressDialog(activity);
+        pDialog.setMessage(msg);
+        pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        pDialog.show();
+        return pDialog;
     }
 
     @Override
