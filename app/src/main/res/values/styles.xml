@@ -9,4 +9,8 @@
 
     </style>
 
+    <style name="noAnimTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
 </resources>
