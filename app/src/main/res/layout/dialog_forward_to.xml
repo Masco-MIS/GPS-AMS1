@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="#02023a"
     android:orientation="vertical"
     android:weightSum="1">
@@ -18,29 +19,74 @@
         android:orientation="vertical"
         android:text="I'm looking for.........." />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:text="Forwarded To"
+        android:textColor="#000000" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_weight="0.86"
-        android:background="#fff"
+        android:background="#FFFFFF"
+        android:gravity="center"
         android:orientation="vertical"
         android:weightSum="1">
 
         <TextView
+            android:id="@+id/txt_dialog_name"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:text="Forwarded To"
-            android:textColor="#000000" />
+            android:layout_height="wrap_content"
+            android:text="sdfsdfasdfasdfasdf"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/txt_dialog_designation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sdfsdfasdfasdfasdf"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/txt_dialog_department"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sdfsdfasdfasdfasdf"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="#fff"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btn_dialog_cancel"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/cancel"
+            android:gravity="left" />
+
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_dialog_selector"
-            android:layout_width="78dp"
-            android:layout_height="107dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="200dp"
-            android:background="@drawable/approve_selector" />
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/approve_selector"
+            android:gravity="right" />
     </LinearLayout>
 </LinearLayout>

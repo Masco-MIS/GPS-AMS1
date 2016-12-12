@@ -1,10 +1,12 @@
 package masco.mis.software.mascoapproval.approval;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -71,6 +73,18 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                     ListView mListView = (ListView) view.getParent().getParent();
                     final int position = mListView.getPositionForView((View) view.getParent());
                     Toast.makeText(Tapplication.getContext(), "Test :" + values.get(position).getAtt2(), Toast.LENGTH_SHORT).show();
+                    final Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.dialog_forward_to);
+                    dialog.setTitle("Forwarding.....");
+                    ((Button) dialog.findViewById(R.id.btn_dialog_cancel)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+
+
                 }
             });
             convertView.setTag(viewHolder);
