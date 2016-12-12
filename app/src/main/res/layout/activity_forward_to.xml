@@ -1,42 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#02023a"
+    android:orientation="vertical"
     android:weightSum="1">
+
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="308dp"
         android:layout_height="49dp"
-        android:text="I'm looking for.........."
-        android:gravity="center"
         android:layout_gravity="center"
-        android:id="@+id/textView1"
-        android:background="@color/common_google_signin_btn_text_dark_default"
         android:layout_margin="10dp"
-        android:orientation="vertical" />
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:text="I'm looking for.........." />
 
     <LinearLayout
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
-        android:weightSum="1"
+        android:layout_margin="16dp"
         android:layout_weight="0.86"
-        android:orientation="vertical">
-    <TextView
-        android:layout_height="47dp"
-        android:layout_width="match_parent"
-        android:text="Forwarded To"
-         android:gravity="center"
-         android:layout_margin="16dp"
-         android:textColor="#000000" />
+        android:background="#fff"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="Forwarded To"
+            android:textColor="#000000" />
+
         <Button
+            android:id="@+id/button2"
             android:layout_width="78dp"
             android:layout_height="107dp"
-            android:layout_marginTop="200dp"
-            android:background="@drawable/approve_selector"
             android:layout_gravity="right"
-            android:id="@+id/button2" />
+            android:layout_marginTop="200dp"
+            android:background="@drawable/approve_selector" />
     </LinearLayout>
 </LinearLayout>
