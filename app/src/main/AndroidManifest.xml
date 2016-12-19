@@ -67,6 +67,7 @@
         </activity>
         <activity android:name=".approval.OperationActivity" />
         <activity android:name=".chat.ChatActivity"></activity>
+        <activity android:name=".chat.ChatOperationActivity" />
     </application>
 
 </manifest>
