@@ -85,6 +85,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                     ListView mListView = (ListView) view.getParent().getParent();
                     final int position = mListView.getPositionForView((View) view.getParent());
                     final String AdditionalID = values.get(position).getAtt2();
+                    final Operation tempOp = values.get(position);
                     final  Employee tempEmp = new Employee();
                     //    final AutoCompleteTextView auto = (AutoCompleteTextView)findViewById(R.id.auto_dialog_search);
                     Toast.makeText(Tapplication.getContext(), "Test :" + values.get(position).getAtt2(), Toast.LENGTH_SHORT).show();
@@ -187,6 +188,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                         public void onClick(View view) {
 
                             Toast.makeText(context, AdditionalID + " will be forwared to " + tempEmp.getEmpNo(), Toast.LENGTH_LONG).show();
+                    //        tempOp.getAtt1();
                             //dialog.dismiss();
                         }
                     });

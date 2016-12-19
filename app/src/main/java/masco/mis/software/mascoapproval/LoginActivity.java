@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import masco.mis.software.mascoapproval.auxiliary.Values;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
@@ -78,7 +79,7 @@ public class LoginActivity extends Activity {
                     tRequest.setDict(tParamList);
                     Gson gson = new Gson();
                     json = new JSONObject(gson.toJson(tRequest, TRequest.class));
-                    Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Method.POST, "http://192.168.2.72/TWebApiSearch/api/v1/TService/GetData", json, loginListener(), genericErrorListener()));
+                    Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Method.POST, Values.ApiGetData, json, loginListener(), genericErrorListener()));
                     //   Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Method.POST, getString(R.string.api_v1_get_data), json, loginListener(), genericErrorListener()));
 
 
