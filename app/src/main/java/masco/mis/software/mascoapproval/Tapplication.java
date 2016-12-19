@@ -9,10 +9,19 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
+import java.util.List;
+
+import masco.mis.software.mascoapproval.pojo.TParam;
+import masco.mis.software.mascoapproval.pojo.TRequest;
 
 /**
  * Created by TahmidH_MIS on 11/29/2016.
@@ -111,6 +120,25 @@ public class Tapplication extends Application {
             mRequestQueue.cancelAll(tag);
         }
     }
+
+    public static JSONObject intiJson(String sp, String db, List<TParam> tParamList) {
+
+        JSONObject json = new JSONObject();
+        try {
+
+            TRequest tRequest = new TRequest();
+            tRequest.setSp(sp);
+            tRequest.setDb(db);
+            tRequest.setDict(tParamList);
+            Gson gson = new Gson();
+            json = new JSONObject(gson.toJson(tRequest, TRequest.class));
+
+        } catch (Exception e) {
+            Toast.makeText(Tapplication.getContext(), "IN T :" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return json;
+    }
+
 
 
 }

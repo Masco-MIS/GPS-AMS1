@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 
 import masco.mis.software.mascoapproval.Tapplication;
+import masco.mis.software.mascoapproval.auxiliary.Values;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
@@ -317,7 +318,7 @@ public class LocationTService extends Service implements
             tParamList.add(new TParam("@Lon", Double.toString(mCurrentLocation.getLongitude())));
             tParamList.add(new TParam("@Time", String.valueOf(DateFormat.getDateTimeInstance().format(new Date()))));
             tRequest.setDict(tParamList);
-            String urls = "http://192.168.2.72/TWebApiSearch/api/v1/TService/SetData";
+            String urls = Values.ApiSetData;//"http://192.168.2.72/TWebApiSearch/api/v1/TService/SetData";
             JSONObject json = new JSONObject();
             json = new JSONObject(new Gson().toJson(tRequest, TRequest.class));
             Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, "http://192.168.2.72/TWebApiSearch/api/v1/TService/SaveData", json, loginListener(), genericErrorListener()));

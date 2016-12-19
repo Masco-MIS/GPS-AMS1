@@ -19,9 +19,6 @@
     <!--sp-->
     <string name="update_location">usp_m_set_location</string>
     <string name="get_po">usp_m_get_po</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--sp-->
 
 
