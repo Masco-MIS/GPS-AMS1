@@ -18,6 +18,10 @@ public class Employee {
         EmpDesignation = empDesignation;
     }
 
+    public Employee() {
+
+    }
+
     public String getEmpNo() {
         return EmpNo;
     }

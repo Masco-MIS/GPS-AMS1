@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout_item"
     android:orientation="vertical">
 
 
@@ -13,7 +14,7 @@
         android:textAlignment="center" />
 
     <TextView
-        android:id="@+id/txt_auto_emp_row_id"
+        android:id="@+id/txt_auto_emp_row_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="44580"
