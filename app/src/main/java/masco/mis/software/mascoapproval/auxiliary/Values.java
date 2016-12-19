@@ -13,6 +13,6 @@ public class Values {
     public static String pref_login_data = "login_data";
     public static String pref_emp_List = "emp_list";
 
-    public static  String sp_get_emp_list = "usp_M_get_emp_for_auto";
+
 
 }

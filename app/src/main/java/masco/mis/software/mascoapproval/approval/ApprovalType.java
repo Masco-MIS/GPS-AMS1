@@ -21,7 +21,7 @@ import java.util.List;
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.auxiliary.Data;
-import masco.mis.software.mascoapproval.auxiliary.Values;
+import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
 import masco.mis.software.mascoapproval.pojo.Employee;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
@@ -40,7 +40,7 @@ public class ApprovalType extends Activity {
             pDialog = Tapplication.pleaseWait(ApprovalType.this, "Downloading......");
             pDialog.show();
             TRequest tRequest = new TRequest();
-            tRequest.setSp(Values.sp_get_emp_list);
+            tRequest.setSp(StoredProcedure.sp_get_emp_list);
             tRequest.setDb(getString(R.string.DB_SCM));
             List<TParam> tParamList = new ArrayList<TParam>();
             tRequest.setDict(tParamList);
