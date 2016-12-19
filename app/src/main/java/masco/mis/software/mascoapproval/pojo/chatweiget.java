@@ -9,6 +9,7 @@ import java.util.Date;
  */
 
 public class ChatWeiget {
+    public String emp_code;
     public String txtTop;
     public String txtMiddle;
     public String txtBottom;
@@ -18,7 +19,8 @@ public class ChatWeiget {
     public ChatWeiget() {
     }
 
-    public ChatWeiget(String txtTop, String txtMiddle, String txtBottom, String txtTopRight) {
+    public ChatWeiget(String emp_code,String txtTop, String txtMiddle, String txtBottom, String txtTopRight) {
+        this.emp_code = emp_code;
         this.txtTop = txtTop;
         this.txtMiddle = txtMiddle;
         this.txtBottom=txtBottom;
@@ -34,9 +36,7 @@ public class ChatWeiget {
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm a");
         String formattedDate = dateFormat.format(new Date()).toString();
 
-        chatWeiget.add(new ChatWeiget("Md. Arman Hossain", "Executive,MIS","1 unread message",formattedDate));
-        chatWeiget.add(new ChatWeiget("b1", "b2","b3",formattedDate));
-        chatWeiget.add(new ChatWeiget("c1", "c2","c3",formattedDate));
+        chatWeiget.add(new ChatWeiget("20772","Md. Arman Hossain", "Executive,MIS","1 unread message",formattedDate));
         return chatWeiget;
     }
 }
