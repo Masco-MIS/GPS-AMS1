@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import masco.mis.software.mascoapproval.R;
+import masco.mis.software.mascoapproval.Tapplication;
 
 public class ApprovalType extends Activity {
     Button btnPr, btnSr, btnLa;
@@ -14,6 +15,7 @@ public class ApprovalType extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Tapplication.FullScreen(this);
         setContentView(R.layout.activity_approval_type);
         btnPr = (Button) findViewById(R.id.btn_approvaltype_pr);
         btnSr = (Button) findViewById(R.id.btn_approvaltype_sr);

@@ -3,19 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
     android:background="#5C6BC0"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="masco.mis.software.mascoapproval.HomeActivity">
-
+    tools:context="masco.mis.software.mascoapproval.chat.ChatActivity">
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="10dp"
         />
+
 
     <fragment
         android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
@@ -25,20 +22,16 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_quick_menu" />
 
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#FFF"
-        android:elevation="10dp"
-        android:title="Search"
 
-        />
-    <FrameLayout
-        android:id="@+id/detailscontainer"
+
+    <ListView
+        android:id="@+id/lv_home_chatlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:dividerHeight="3dp">
 
+    </ListView>
 
 </LinearLayout>

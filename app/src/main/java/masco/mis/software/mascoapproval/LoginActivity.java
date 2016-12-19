@@ -40,6 +40,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Tapplication.FullScreen(this);
         String lTest = Tapplication.Pref().getString(getString(R.string.pref_login_data), "");
         if (lTest != null || !lTest.isEmpty()) {
 

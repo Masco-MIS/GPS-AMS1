@@ -11,44 +11,19 @@
     android:orientation="vertical"
     tools:context="masco.mis.software.mascoapproval.approval.ApprovalType">
 
-    <LinearLayout
-
+    <Space
         android:layout_width="match_parent"
+        android:layout_height="10dp"
+        />
+
+    <fragment
+        android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
+        android:id="@+id/frag_root_quickmenu"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center|top"
-        android:orientation="horizontal">
+        tools:layout="@layout/fragment_quick_menu" />
 
-
-        <ImageButton
-            android:id="@+id/btn_home_message"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_message" />
-
-        <ImageButton
-            android:id="@+id/btn_home_approval"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_approval" />
-
-        <ImageButton
-            android:id="@+id/btn_home_voicecall"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_voicecall" />
-
-        <ImageButton
-            android:id="@+id/btn_home_chart"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_chart" />
-
-        <ImageButton
-            android:id="@+id/btn_home_operation"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_operation" />
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
