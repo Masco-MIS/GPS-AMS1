@@ -121,8 +121,6 @@ public class ChatOperationActivity extends Activity {
                 }
             }
             });
-
-
     }
 
     public void loadNextDataFromApi(int offset) {
@@ -136,25 +134,31 @@ public class ChatOperationActivity extends Activity {
     private ArrayList<ChatMessage> DemoChatMessage()
     {
         ArrayList<ChatMessage> chatMessagesList = new ArrayList<ChatMessage>();
-        chatMessagesList.add(new ChatMessage("20772","11111","aaaaaaaaaaaaaa","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));
-        chatMessagesList.add(new ChatMessage("20772","11111","eeeeeeeeeeeee","2",true ));
+
+        for (int i=1000; i>0; i--){
+            chatMessagesList.add(new ChatMessage("20772","11111",String.valueOf(i),"2",true ));
+        }
+
+//        chatMessagesList.add(new ChatMessage("20772","11111","aaaaaaaaaaaaaa","2",true ));
+//
+//        chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));
+//        chatMessagesList.add(new ChatMessage("20772","11111","eeeeeeeeeeeee","2",true ));
 
 
         return  chatMessagesList;
