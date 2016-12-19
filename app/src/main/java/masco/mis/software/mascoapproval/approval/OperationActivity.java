@@ -32,15 +32,18 @@ import java.util.List;
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.approval.pojo.Operation;
+import masco.mis.software.mascoapproval.auxiliary.Data;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
+
+import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
 
 public class OperationActivity extends Activity implements AdapterView.OnItemClickListener {
     ListView lstView;
     ArrayAdapter<Operation> adapter;
     List<Operation> list = new ArrayList<Operation>();
+    JSONObject json = new JSONObject();
     ProgressDialog pDialog;
-
     @Override
     public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
         TextView t1 = (TextView) v.getTag(R.id.im_operation_row_item_t1);
@@ -74,16 +77,18 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
 //            pDialog.setIndeterminate(false);
 //            pDialog.setCancelable(false);
 //            pDialog.show();
+
             pDialog = Tapplication.pleaseWait(OperationActivity.this, "Downloading......");
-            JSONObject json = new JSONObject();
+            pDialog.show();
             TRequest tRequest = new TRequest();
             tRequest.setSp(getString(R.string.get_po));
             tRequest.setDb(getString(R.string.DB_SCM));
             List<TParam> tParamList = new ArrayList<TParam>();
+            tParamList.add(new TParam("@id", Data.getUserID()));
             tRequest.setDict(tParamList);
             Gson gson = new Gson();
             json = new JSONObject(gson.toJson(tRequest, TRequest.class));
-            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, "http://192.168.2.72/TWebApiSearch/api/v1/TService/GetData", json, loginListener(), genericErrorListener()));
+            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, ApiGetData, json, loginListener(), genericErrorListener()));
 
         } catch (Exception ex) {
             if (pDialog.isShowing()) {
