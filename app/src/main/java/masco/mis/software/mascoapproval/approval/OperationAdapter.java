@@ -209,16 +209,17 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                                 tParamList.add(new TParam("@ReceiverId", tempEmp.getEmpID()));
                                 tParamList.add(new TParam("@ApprovalNo", tempOp.getAtt1()));
                                 tParamList.add(new TParam("@ApprovalId", tempOp.getApprovalId()));
-
                                 tRequest.setDict(tParamList);
                                 Gson gson = new Gson();
                                 json = new JSONObject(gson.toJson(tRequest, TRequest.class));
                                 Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, Values.ApiSetData, json, new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        Toast.makeText(context, "Done with " + response.toString(), Toast.LENGTH_SHORT).show();
+                                     //   Toast.makeText(context, "Done with " + response.toString(), Toast.LENGTH_SHORT).show();
                                         remove(tempOp);
+
                                         notifyDataSetChanged();
+                                        dialog.dismiss();
                                     }
                                 }, genericErrorListener()));
                                 //        tempOp.getAtt1();

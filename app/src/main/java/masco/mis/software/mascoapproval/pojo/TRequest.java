@@ -34,6 +34,16 @@ public class TRequest {
     }
 
     public List<TParam> dict;
+    public List<List<TParam>> dictList;
+
+    public List<List<TParam>> getDictList() {
+        return dictList;
+    }
+
+    public void setDictList(List<List<TParam>> dictList) {
+        this.dictList = dictList;
+    }
+
     public String db;
 
 }
