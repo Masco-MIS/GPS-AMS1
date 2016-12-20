@@ -33,6 +33,8 @@ import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.approval.pojo.Operation;
 import masco.mis.software.mascoapproval.auxiliary.Data;
+import masco.mis.software.mascoapproval.auxiliary.Database;
+import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
@@ -81,10 +83,11 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
             pDialog = Tapplication.pleaseWait(OperationActivity.this, "Downloading......");
             pDialog.show();
             TRequest tRequest = new TRequest();
-            tRequest.setSp(getString(R.string.get_po));
-            tRequest.setDb(getString(R.string.DB_SCM));
+            tRequest.setSp(StoredProcedure.get_po);
+            tRequest.setDb(Database.SCM);
             List<TParam> tParamList = new ArrayList<TParam>();
             tParamList.add(new TParam("@id", Data.getUserID()));
+            tParamList.add(new TParam("@ApprovalTypeId","1"));
             tRequest.setDict(tParamList);
             Gson gson = new Gson();
             json = new JSONObject(gson.toJson(tRequest, TRequest.class));
@@ -161,6 +164,8 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
                             operation.setAtt2(j.getString("Att2"));
                             operation.setAtt3(j.getString("Att3"));
                             operation.setAtt4(true);
+                            operation.setPROId(j.getString("PROId"));
+                            operation.setApprovalId(j.getString("ApprovalId"));
                             lstData.add(operation);
                         }
                         adapter = new OperationAdapter(OperationActivity.this, lstData);
