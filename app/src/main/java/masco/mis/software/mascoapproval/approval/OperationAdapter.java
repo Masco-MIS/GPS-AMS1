@@ -18,10 +18,15 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +35,12 @@ import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.approval.pojo.Operation;
 import masco.mis.software.mascoapproval.auxiliary.Data;
+import masco.mis.software.mascoapproval.auxiliary.Database;
+import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
+import masco.mis.software.mascoapproval.auxiliary.Values;
 import masco.mis.software.mascoapproval.pojo.Employee;
+import masco.mis.software.mascoapproval.pojo.TParam;
+import masco.mis.software.mascoapproval.pojo.TRequest;
 
 /**
  * Created by TahmidH_MIS on 12/6/2016.
@@ -86,7 +96,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                     final int position = mListView.getPositionForView((View) view.getParent());
                     final String AdditionalID = values.get(position).getAtt2();
                     final Operation tempOp = values.get(position);
-                    final  Employee tempEmp = new Employee();
+                    final Employee tempEmp = new Employee();
                     //    final AutoCompleteTextView auto = (AutoCompleteTextView)findViewById(R.id.auto_dialog_search);
                     Toast.makeText(Tapplication.getContext(), "Test :" + values.get(position).getAtt2(), Toast.LENGTH_SHORT).show();
                     final Dialog dialog = new Dialog(context);
@@ -171,6 +181,7 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Employee model = (Employee) view.getTag();
                             tempEmp.setEmpNo(model.getEmpNo());
+                            tempEmp.setEmpID(model.getEmpID());
 
 
                         }
@@ -187,9 +198,33 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                         @Override
                         public void onClick(View view) {
 
-                            Toast.makeText(context, AdditionalID + " will be forwared to " + tempEmp.getEmpNo(), Toast.LENGTH_LONG).show();
-                    //        tempOp.getAtt1();
-                            //dialog.dismiss();
+                            try {
+                                Toast.makeText(context, AdditionalID + " will be forwared to " + tempEmp.getEmpNo(), Toast.LENGTH_LONG).show();
+                                JSONObject json = new JSONObject();
+                                TRequest tRequest = new TRequest();
+                                tRequest.setSp(StoredProcedure.forward_approval);
+                                tRequest.setDb(Database.SCM);
+                                List<TParam> tParamList = new ArrayList<TParam>();
+                                tParamList.add(new TParam("@SenderId", Data.getUserID()));
+                                tParamList.add(new TParam("@ReceiverId", tempEmp.getEmpID()));
+                                tParamList.add(new TParam("@ApprovalNo", tempOp.getAtt1()));
+                                tRequest.setDict(tParamList);
+                                Gson gson = new Gson();
+                                json = new JSONObject(gson.toJson(tRequest, TRequest.class));
+                                Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, Values.ApiSetData, json, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Toast.makeText(context, "Done with " + response.toString(), Toast.LENGTH_SHORT).show();
+                                        remove(tempOp);
+                                        notifyDataSetChanged();
+                                    }
+                                }, genericErrorListener()));
+                                //        tempOp.getAtt1();
+                                //dialog.dismiss();
+                            } catch (Exception e) {
+                                Toast.makeText(context, "error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                     });
 
