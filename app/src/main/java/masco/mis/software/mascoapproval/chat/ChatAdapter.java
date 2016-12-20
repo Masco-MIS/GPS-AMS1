@@ -1,7 +1,4 @@
 package masco.mis.software.mascoapproval.chat;
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -16,12 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.chat.pojo.ChatMessage;
-
-import static android.R.id.list;
-import static masco.mis.software.mascoapproval.auxiliary.Util.getCurrentDate;
-import static masco.mis.software.mascoapproval.auxiliary.Util.getCurrentTime;
 
 /**
  * Created by ARMAN on 14-Dec-16.
@@ -134,12 +129,13 @@ public class ChatAdapter extends BaseAdapter{
                     /** To do code here*/
                     Log.v("arman","load more from api");
 
-                    chatMessageList.addAll(MoreDemoChatMessage());
+                  //  chatMessageList.addAll(MoreDemoChatMessage());
                     for (ChatMessage item : MoreDemoChatMessage()) {
                         chatMessageList.add(0,item);
 
                     }
-                    msgListView.smoothScrollToPosition(0);
+
+                   // msgListView.smoothScrollToPosition(0);
 
 
 

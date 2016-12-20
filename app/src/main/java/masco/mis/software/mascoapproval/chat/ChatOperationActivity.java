@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -75,6 +74,7 @@ public class ChatOperationActivity extends Activity {
         // ----Set autoscroll of listview when a new message arrives----//
         msgListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         msgListView.setStackFromBottom(true);
+
 
         //todo api call to get chatMessage and do the rest on success
         chatlist = DemoChatMessage();//new ArrayList<ChatMessage>();
