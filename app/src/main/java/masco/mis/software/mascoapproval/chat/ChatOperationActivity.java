@@ -81,46 +81,7 @@ public class ChatOperationActivity extends Activity {
         chatAdapter = new ChatAdapter(this, chatlist);
         msgListView.setAdapter(chatAdapter);
 
-        msgListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            private int currentVisibleItemCount;
-            private int currentScrollState;
-            private int currentFirstVisibleItem;
-            private int totalItem;
 
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // TODO Auto-generated method stub
-                this.currentScrollState = scrollState;
-                this.isScrollCompleted();
-                if (scrollState==SCROLL_STATE_TOUCH_SCROLL)
-                {
-                    Log.v("arman", "scrolling...a");
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                // TODO Auto-generated method stub
-                this.currentFirstVisibleItem = firstVisibleItem;
-                this.currentVisibleItemCount = visibleItemCount;
-                this.totalItem = totalItemCount;
-                if (currentScrollState==SCROLL_STATE_TOUCH_SCROLL)
-                {
-                    Log.v("arman", "scrolling...b :"+firstVisibleItem);
-                }
-            }
-
-            private void isScrollCompleted() {
-                if (totalItem - currentFirstVisibleItem == currentVisibleItemCount
-                        && this.currentScrollState == SCROLL_STATE_IDLE) {
-                    /** To do code here*/
-
-
-                }
-            }
-            });
     }
 
     public void loadNextDataFromApi(int offset) {
@@ -135,7 +96,7 @@ public class ChatOperationActivity extends Activity {
     {
         ArrayList<ChatMessage> chatMessagesList = new ArrayList<ChatMessage>();
 
-        for (int i=1000; i>0; i--){
+        for (int i=100; i>0; i--){
             chatMessagesList.add(new ChatMessage("20772","11111",String.valueOf(i),"2",true ));
         }
 
