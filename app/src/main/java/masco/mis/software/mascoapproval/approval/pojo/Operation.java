@@ -9,6 +9,16 @@ public class Operation {
     public String att2;
     public String att3;
     public boolean att4;
+    public  String PROId;
+    public String ApprovalId;
+
+    public String getApprovalId() {
+        return ApprovalId;
+    }
+
+    public void setApprovalId(String approvalId) {
+        ApprovalId = approvalId;
+    }
 
     public boolean isAtt4() {
         return att4;
@@ -40,5 +50,13 @@ public class Operation {
 
     public void setAtt3(String att3) {
         this.att3 = att3;
+    }
+
+    public String getPROId() {
+        return PROId;
+    }
+
+    public void setPROId(String PROId) {
+        this.PROId = PROId;
     }
 }

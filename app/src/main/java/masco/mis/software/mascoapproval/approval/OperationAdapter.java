@@ -208,6 +208,8 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
                                 tParamList.add(new TParam("@SenderId", Data.getUserID()));
                                 tParamList.add(new TParam("@ReceiverId", tempEmp.getEmpID()));
                                 tParamList.add(new TParam("@ApprovalNo", tempOp.getAtt1()));
+                                tParamList.add(new TParam("@ApprovalId", tempOp.getApprovalId()));
+
                                 tRequest.setDict(tParamList);
                                 Gson gson = new Gson();
                                 json = new JSONObject(gson.toJson(tRequest, TRequest.class));
