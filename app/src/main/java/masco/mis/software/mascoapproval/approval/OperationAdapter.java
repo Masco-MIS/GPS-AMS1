@@ -80,18 +80,107 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
             viewHolder = new ViewHolder();
 
             viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.ll_operation_row_item_ts);
+            viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.dialog_operation_item_details_full);
+                    dialog.setTitle("Details");
+
+                    ListView mListView = (ListView) view.getParent().getParent();
+                    final int position = mListView.getPositionForView((View) view.getParent());
+                    final Operation tempOp = values.get(position);
+                    try {
+                        LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.ll_operationa_row_details_full);
+                        TextView t1 = new TextView(context);
+                        t1.setText("ApprovalId :" + tempOp.getApprovalId());
+
+                        TextView t2 = new TextView(context);
+                        t2.setText("Att1 :" + tempOp.getAtt1());
+
+                        TextView t3 = new TextView(context);
+                        t3.setText("Att2 :" + tempOp.getAtt2());
+
+                        TextView t4 = new TextView(context);
+                        t4.setText("Att3 :" + tempOp.getAtt3());
+
+
+                        TextView t5 = new TextView(context);
+                        t5.setText("AutoDtlId :" + tempOp.getAutoDtlId());
+
+                        TextView t6 = new TextView(context);
+                        t6.setText("PROId :" + tempOp.getPROId());
+
+                        linearLayout.addView(t6);
+                        linearLayout.addView(t5);
+                        linearLayout.addView(t4);
+                        linearLayout.addView(t3);
+                        linearLayout.addView(t2);
+                        linearLayout.addView(t1);
+                    } catch (Exception e) {
+                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.show();
+
+                }
+            });
             viewHolder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     Toast.makeText(context, "disum disum......", Toast.LENGTH_SHORT).show();
+                    ListView mListView = (ListView) view.getParent().getParent();
+                    final int position = mListView.getPositionForView((View) view.getParent());
+                    final Operation tempOp = values.get(position);
                     final Dialog dialog = new Dialog(context);
                     dialog.setContentView(R.layout.dialog_operation_item_details);
                     dialog.setTitle("Delete");
                     TextView t1 = (TextView) dialog.findViewById(R.id.dia_operation_item_details_t1);
                     TextView t2 = (TextView) dialog.findViewById(R.id.dia_operation_item_details_t2);
                     TextView t3 = (TextView) dialog.findViewById(R.id.dia_operation_item_details_t3);
-                    ListView mListView = (ListView) view.getParent().getParent();
-                    final int position = mListView.getPositionForView((View) view.getParent());
+                    Button yes = (Button) dialog.findViewById(R.id.btn_operation_item_details_yes);
+                    Button no = (Button) dialog.findViewById(R.id.btn_operation_item_details_no);
+                    yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(context, "Will be deleted!! now", Toast.LENGTH_SHORT).show();
+                            //dialog.hide();
+                            try {
+
+                                JSONObject json = new JSONObject();
+                                TRequest tRequest = new TRequest();
+                                tRequest.setSp(StoredProcedure.update_approval_status);
+                                tRequest.setDb(Database.SCM);
+                                List<TParam> tParamList = new ArrayList<TParam>();
+                                tParamList.add(new TParam("@id", tempOp.getAutoDtlId()));
+                                tRequest.setDict(tParamList);
+                                Gson gson = new Gson();
+                                json = new JSONObject(gson.toJson(tRequest, TRequest.class));
+                                Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, Values.ApiSetData, json, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        //   Toast.makeText(context, "Done with " + response.toString(), Toast.LENGTH_SHORT).show();
+                                        remove(tempOp);
+
+                                        notifyDataSetChanged();
+                                        dialog.dismiss();
+                                    }
+                                }, genericErrorListener()));
+                                //        tempOp.getAtt1();
+                                //dialog.dismiss();
+                            } catch (Exception e) {
+                                Toast.makeText(context, "error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    no.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.hide();
+
+                        }
+                    });
+
+
                     t1.setText(values.get(position).getAtt1());
                     t2.setText(values.get(position).getAtt2());
                     t3.setText(values.get(position).getAtt3());
@@ -402,11 +491,12 @@ public class OperationAdapter extends ArrayAdapter<Operation> {
 //                for (Operation ik : (List<Operation>) filterResults.values) {
 //                    values.add(ik);
 //                }
-                for (Operation op : values
-                        ) {
-                    values.remove(op);
-
-                }
+//                for (Operation op : values
+//                        ) {
+//                    values.remove(op);
+//
+//                }
+                values.clear();
                 try {
                     if (charSequence != "") {
                         List<Operation> it = (List<Operation>) filterResults.values;
