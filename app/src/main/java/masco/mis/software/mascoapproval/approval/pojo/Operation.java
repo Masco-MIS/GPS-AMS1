@@ -11,6 +11,15 @@ public class Operation {
     public boolean att4;
     public  String PROId;
     public String ApprovalId;
+    public String AutoDtlId;
+
+    public String getAutoDtlId() {
+        return AutoDtlId;
+    }
+
+    public void setAutoDtlId(String autoDtlId) {
+        AutoDtlId = autoDtlId;
+    }
 
     public String getApprovalId() {
         return ApprovalId;

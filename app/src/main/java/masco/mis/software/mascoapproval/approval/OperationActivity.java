@@ -39,6 +39,7 @@ import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
 import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
+import static masco.mis.software.mascoapproval.auxiliary.Values.ApiSetDataList;
 
 public class OperationActivity extends Activity implements AdapterView.OnItemClickListener {
     ListView lstView;
@@ -46,6 +47,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
     List<Operation> list = new ArrayList<Operation>();
     JSONObject json = new JSONObject();
     ProgressDialog pDialog;
+    ImageButton btnOperationSubmit;
     @Override
     public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
         TextView t1 = (TextView) v.getTag(R.id.im_operation_row_item_t1);
@@ -68,6 +70,61 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
         super.onCreate(savedInstanceState);
         Tapplication.FullScreen(OperationActivity.this);
         setContentView(R.layout.activity_operation);
+        btnOperationSubmit = (ImageButton)findViewById(R.id.btn_operation_submit);
+        btnOperationSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(OperationActivity.this, "Count +"+adapter.getCount(), Toast.LENGTH_SHORT).show();
+                List<Operation> operationList = new ArrayList<Operation>();
+                final List<List<TParam>> tPLists = new ArrayList<List<TParam>>();
+                for (int i =0;i <adapter.getCount();i++)
+                {
+                  //  operationList.add(adapter.getItem(i));
+                    List<TParam> tParamList = new ArrayList<TParam>();
+                    if (adapter.getItem(i).isAtt4()) {
+                        tParamList.add(new TParam("@id", adapter.getItem(i).getAutoDtlId()));
+                        tPLists.add(tParamList);
+                    }
+                }
+                pDialog = Tapplication.pleaseWait(OperationActivity.this, "Downloading......");
+                pDialog.show();
+                TRequest tRequest = new TRequest();
+                tRequest.setSp(StoredProcedure.set_approval_status);
+                tRequest.setDb(Database.SCM);
+                tRequest.setDictList(tPLists);
+                Gson gson = new Gson();
+                try
+                {
+                    json = new JSONObject(gson.toJson(tRequest, TRequest.class));
+                    Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, ApiSetDataList, json, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (pDialog.isShowing()) {
+                                pDialog.dismiss();
+                            }
+                            for (int i =0;i <adapter.getCount();i++)
+                            {
+                                //  operationList.add(adapter.getItem(i));
+
+                                if (adapter.getItem(i).isAtt4()) {
+                                    adapter.remove(adapter.getItem(i));
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                            Toast.makeText(OperationActivity.this, "Done with"+response.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }, genericErrorListener()));
+
+                }
+                catch (Exception e)
+                {
+
+                }
+
+
+            }
+        });
 
 
         lstView = (ListView) findViewById(R.id.listview_operation_list);
@@ -166,6 +223,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
                             operation.setAtt4(true);
                             operation.setPROId(j.getString("PROId"));
                             operation.setApprovalId(j.getString("ApprovalId"));
+                            operation.setAutoDtlId(j.getString("AutoDtlId"));
                             lstData.add(operation);
                         }
                         adapter = new OperationAdapter(OperationActivity.this, lstData);
