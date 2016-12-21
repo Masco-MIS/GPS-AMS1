@@ -1,4 +1,5 @@
 package masco.mis.software.mascoapproval.chat;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -22,7 +23,7 @@ import masco.mis.software.mascoapproval.chat.pojo.ChatMessage;
  * Created by ARMAN on 14-Dec-16.
  */
 
-public class ChatAdapter extends BaseAdapter{
+public class ChatAdapter extends BaseAdapter {
 
 
     private static LayoutInflater inflater = null;
@@ -75,10 +76,7 @@ public class ChatAdapter extends BaseAdapter{
         msg.setTextColor(Color.BLACK);
 
 
-
-
         //scroll listener
-
         final ListView msgListView = (ListView) parent.findViewById(R.id.msgListView);
         msgListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int currentVisibleItemCount;
@@ -92,17 +90,14 @@ public class ChatAdapter extends BaseAdapter{
                 // TODO Auto-generated method stub
                 this.currentScrollState = scrollState;
 
-                if (scrollState==SCROLL_STATE_TOUCH_SCROLL)
-                {
+                if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
                     Log.v("arman", "SCROLL_STATE_TOUCH_SCROLL...a");
                 }
-                if (scrollState==SCROLL_STATE_FLING)
-                {
+                if (scrollState == SCROLL_STATE_FLING) {
                     Log.v("arman", "SCROLL_STATE_FLING...a");
                 }
-                if (scrollState==SCROLL_STATE_IDLE)
-                {
-                    Log.v("arman", "SCROLL_STATE_FLING...a");
+                if (scrollState == SCROLL_STATE_IDLE) {
+                    Log.v("arman", "SCROLL_STATE_IDLE...a");
                 }
                 this.isScrollCompleted();
             }
@@ -114,46 +109,49 @@ public class ChatAdapter extends BaseAdapter{
                 this.currentFirstVisibleItem = firstVisibleItem;
                 this.currentVisibleItemCount = visibleItemCount;
                 this.totalItem = totalItemCount;
-                if (currentScrollState==SCROLL_STATE_TOUCH_SCROLL)
-                {
-                    Log.v("arman", "onScroll... /firstVisibleItem:"+firstVisibleItem +
-                            "/visibleItemCount"+visibleItemCount+ "/totalItemCount"+totalItemCount);
+                if (currentScrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    Log.v("arman", "onScroll... /firstVisibleItem:" + firstVisibleItem +
+                            "/visibleItemCount" + visibleItemCount + "/totalItemCount" + totalItemCount);
                 }
             }
 
+
             private void isScrollCompleted() {
-                Log.v("arman", "isScrollCompleted... /firstVisibleItem:"+currentFirstVisibleItem +
-                        "/visibleItemCount"+currentVisibleItemCount+ "/totalItemCount"+totalItem);
+                Log.v("arman", "isScrollCompleted... /firstVisibleItem:" + currentFirstVisibleItem +
+                        "/visibleItemCount" + currentVisibleItemCount + "/totalItemCount" + totalItem);
                 if (currentFirstVisibleItem == 0
                         && this.currentScrollState == SCROLL_STATE_IDLE) {
                     /** To do code here*/
-                    Log.v("arman","load more from api");
+                    Log.v("arman", "load more from api");
 
-                  //  chatMessageList.addAll(MoreDemoChatMessage());
+                    //  chatMessageList.addAll(MoreDemoChatMessage());
                     for (ChatMessage item : MoreDemoChatMessage()) {
-                        chatMessageList.add(0,item);
+                        chatMessageList.add(0, item);
 
                     }
-
-                   // msgListView.smoothScrollToPosition(0);
-
-
-
+                    // final int  position = msgListView.getSelectedItemPosition();
                     notifyDataSetChanged();
 
+                    //Use the post method to wait for the list to finish updating after you call notifyDataSetChanged
+                    msgListView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //call smooth scroll
+                            msgListView.smoothScrollToPosition(currentFirstVisibleItem);
+                        }
+                    });
                 }
             }
         });
         return vi;
     }
 
-    private ArrayList<ChatMessage> MoreDemoChatMessage()
-    {
+    private ArrayList<ChatMessage> MoreDemoChatMessage() {
         ArrayList<ChatMessage> chatMessagesList = new ArrayList<ChatMessage>();
-        for (int i=100; i>0; i--){
-            chatMessagesList.add(new ChatMessage("20772","11111",String.valueOf(i)+ " " + System.currentTimeMillis() ,"2",true ));
+        for (int i = 100; i > 0; i--) {
+            chatMessagesList.add(new ChatMessage("20772", "11111", String.valueOf(i) + " " + System.currentTimeMillis(), "2", true));
         }
-        return  chatMessagesList;
+        return chatMessagesList;
     }
 
     public void add(ChatMessage object) {
