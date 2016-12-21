@@ -3,11 +3,15 @@ package masco.mis.software.mascoapproval.approval;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,6 +52,9 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
     JSONObject json = new JSONObject();
     ProgressDialog pDialog;
     ImageButton btnOperationSubmit;
+    CheckBox chkOperationAll;
+    EditText edtFilterListview;
+
     @Override
     public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
         TextView t1 = (TextView) v.getTag(R.id.im_operation_row_item_t1);
@@ -55,6 +62,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
         TextView t3 = (TextView) v.getTag(R.id.im_operation_row_item_t3);
         ImageButton imForward = (ImageButton) v.getTag(R.id.im_operation_row_item_forward);
         CheckBox checkbox = (CheckBox) v.getTag(R.id.im_operation_row_item_check);
+        Toast.makeText(this, "im hit", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -70,16 +78,46 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
         super.onCreate(savedInstanceState);
         Tapplication.FullScreen(OperationActivity.this);
         setContentView(R.layout.activity_operation);
-        btnOperationSubmit = (ImageButton)findViewById(R.id.btn_operation_submit);
+        edtFilterListview = (EditText)findViewById(R.id.edt_operation_filter_list_view);
+        edtFilterListview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                adapter.getFilter().filter(editable.toString());
+
+
+            }
+        });
+        chkOperationAll = (CheckBox) findViewById(R.id.check_operation_all);
+        chkOperationAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    adapter.getItem(i).setAtt4(b);
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+        btnOperationSubmit = (ImageButton) findViewById(R.id.btn_operation_submit);
         btnOperationSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(OperationActivity.this, "Count +"+adapter.getCount(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OperationActivity.this, "Count +" + adapter.getCount(), Toast.LENGTH_SHORT).show();
                 List<Operation> operationList = new ArrayList<Operation>();
                 final List<List<TParam>> tPLists = new ArrayList<List<TParam>>();
-                for (int i =0;i <adapter.getCount();i++)
-                {
-                  //  operationList.add(adapter.getItem(i));
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    //  operationList.add(adapter.getItem(i));
                     List<TParam> tParamList = new ArrayList<TParam>();
                     if (adapter.getItem(i).isAtt4()) {
                         tParamList.add(new TParam("@id", adapter.getItem(i).getAutoDtlId()));
@@ -93,8 +131,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
                 tRequest.setDb(Database.SCM);
                 tRequest.setDictList(tPLists);
                 Gson gson = new Gson();
-                try
-                {
+                try {
                     json = new JSONObject(gson.toJson(tRequest, TRequest.class));
                     Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, ApiSetDataList, json, new Response.Listener<JSONObject>() {
                         @Override
@@ -102,8 +139,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
                             if (pDialog.isShowing()) {
                                 pDialog.dismiss();
                             }
-                            for (int i =0;i <adapter.getCount();i++)
-                            {
+                            for (int i = 0; i < adapter.getCount(); i++) {
                                 //  operationList.add(adapter.getItem(i));
 
                                 if (adapter.getItem(i).isAtt4()) {
@@ -111,14 +147,12 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
                                 }
                                 adapter.notifyDataSetChanged();
                             }
-                            Toast.makeText(OperationActivity.this, "Done with"+response.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OperationActivity.this, "Done with" + response.toString(), Toast.LENGTH_SHORT).show();
 
                         }
                     }, genericErrorListener()));
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
 
                 }
 
@@ -128,7 +162,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
 
 
         lstView = (ListView) findViewById(R.id.listview_operation_list);
-        //lstView.setOnItemClickListener(this);
+
         try {
 //            pDialog = new ProgressDialog(OperationActivity.this);
 //            pDialog.setMessage("Please wait...");
@@ -144,7 +178,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
             tRequest.setDb(Database.SCM);
             List<TParam> tParamList = new ArrayList<TParam>();
             tParamList.add(new TParam("@id", Data.getUserID()));
-            tParamList.add(new TParam("@ApprovalTypeId","1"));
+            tParamList.add(new TParam("@ApprovalTypeId", "1"));
             tRequest.setDict(tParamList);
             Gson gson = new Gson();
             json = new JSONObject(gson.toJson(tRequest, TRequest.class));
@@ -227,9 +261,8 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
                             lstData.add(operation);
                         }
                         adapter = new OperationAdapter(OperationActivity.this, lstData);
-                        //    lstView.setAdapter(new OperationAdapter(OperationActivity.this, lstData));
                         lstView.setAdapter(adapter);
-                        lstView.setOnItemClickListener(OperationActivity.this);
+
 
                     } else {
 

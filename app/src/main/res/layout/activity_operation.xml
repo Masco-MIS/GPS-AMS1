@@ -13,27 +13,23 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        />
+        android:layout_height="10dp" />
 
 
     <fragment
-        android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
         android:id="@+id/frag_root_quickmenu"
+        android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_quick_menu" />
 
-    <SearchView
+    <EditText
+        android:id="@+id/edt_operation_filter_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#FFF"
-        android:elevation="10dp"
-        android:title="Search"
-
-        />
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="text" />
 
 
     <LinearLayout
@@ -43,14 +39,31 @@
         android:background="#ffffff"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Operation"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="normal|bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".88"
+                android:text="Operation"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
+
+            <CheckBox
+                android:id="@+id/check_operation_all"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".12"
+                android:checked="true"
+                android:text="All" />
+
+        </LinearLayout>
+
 
         <ListView
             android:id="@+id/listview_operation_list"
