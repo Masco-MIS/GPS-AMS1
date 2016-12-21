@@ -9,4 +9,5 @@ public class StoredProcedure {
     public static String forward_approval ="sp_M_insert_forward";
     public static String get_po = "usp_m_get_po";
     public static String set_approval_status = "sp_M_update_approval";
+    public static String update_approval_status = "sp_M_po_update";
 }
