@@ -20,6 +20,7 @@
     <string name="update_location">usp_m_set_location</string>
     <string name="get_po">usp_m_get_po</string>
     <!--sp-->
-
+    <!--keys-->
+    <string name="google_map_key">AIzaSyC7UKI8yiVrzUllwLS3V2_b-H5Mor54KGc</string>
 
 </resources>
