@@ -1,6 +1,7 @@
 package masco.mis.software.mascoapproval.chat;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,28 +20,45 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
+import masco.mis.software.mascoapproval.approval.OperationActivity;
+import masco.mis.software.mascoapproval.approval.OperationAdapter;
+import masco.mis.software.mascoapproval.approval.pojo.Operation;
+import masco.mis.software.mascoapproval.auxiliary.Data;
+import masco.mis.software.mascoapproval.auxiliary.Database;
+import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
 import masco.mis.software.mascoapproval.auxiliary.Util;
 import masco.mis.software.mascoapproval.chat.pojo.ChatMessage;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
+import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
+
 public class ChatOperationActivity extends Activity {
 
     private EditText msg_edittext;
-    private String from_emp = "20772", to_emp = "11111";
+    private String from_emp = "", to_emp = "";
     private Random random;
     public static ArrayList<ChatMessage> chatlist;
     public static ChatAdapter chatAdapter;
     ListView msgListView;
+    ProgressDialog pDialog;
+    JSONObject json = new JSONObject();
 
 
     @Override
@@ -49,12 +67,14 @@ public class ChatOperationActivity extends Activity {
         Tapplication.FullScreen(this);
         setContentView(R.layout.activity_chat_operation);
 
+        from_emp= Data.getUserID();
+
         Bundle bundle = getIntent().getExtras();
-        String to_emp_code = bundle.getString("to_emp_code");
-        Log.v("arman", "chat op ac"+to_emp_code);
+        String to_emp = bundle.getString("to_emp_code");
+        Log.v("arman", "chat op ac!"+ " from:"+from_emp+" to"+to_emp);
 
 
-        random = new Random();
+       // random = new Random();
 
         msg_edittext = (EditText) findViewById(R.id.messageEditText);
         msgListView = (ListView) findViewById(R.id.msgListView);
@@ -62,12 +82,10 @@ public class ChatOperationActivity extends Activity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendTextMessage(view);
-                /*switch (view.getId()) {
+                switch (view.getId()) {
                     case R.id.sendMessageButton:
                         sendTextMessage(view);
-
-                }*/
+                }
             }
         });
 
@@ -78,12 +96,94 @@ public class ChatOperationActivity extends Activity {
 
         //todo api call to get chatMessage and do the rest on success
         chatlist = DemoChatMessage();//new ArrayList<ChatMessage>();
+        try {
+            pDialog = Tapplication.pleaseWait(this, "Loading Messages...");
+            pDialog.show();
+            TRequest tRequest = new TRequest();
+            tRequest.setSp("usp_m_getchatmessage");
+            tRequest.setDb(Database.SCM);
+            List<TParam> tParamList = new ArrayList<TParam>();
+            tParamList.add(new TParam("@MessageID", "0"));
+            tRequest.setDict(tParamList);
+            Gson gson = new Gson();
+            json = new JSONObject(gson.toJson(tRequest, TRequest.class));
+            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(
+                    Request.Method.POST, ApiGetData, json, GetChatMessageOnSuccessListDataBind(), saveMessageError()));
+
+        } catch (Exception ex) {
+            if (pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+
+            Toast.makeText(getApplicationContext(),
+                    ex.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+
+
+
+
+
         chatAdapter = new ChatAdapter(this, chatlist);
         msgListView.setAdapter(chatAdapter);
+
+        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleWithFixedDelay(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Log.v("arman", "call from timer!");
+            }
+        }, 1, 5, TimeUnit.SECONDS);
 
 
     }
 
+
+
+    private Response.Listener<JSONObject> GetChatMessageOnSuccessListDataBind() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (pDialog.isShowing()) {
+                        pDialog.dismiss();
+                    }
+                    Gson Res = new Gson();
+                    JSONArray data = response.getJSONArray("data");
+                    if (data.length() > 0) {
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject j = data.getJSONObject(i);
+                            ChatMessage chatMessage = new ChatMessage("20772","11111",String.valueOf(i),"2",true );
+//                            chatMessage.setAtt1(j.getString("Att1"));
+//                            chatMessage.setAtt2(j.getString("Att2"));
+//                            chatMessage.setAtt3(j.getString("Att3"));
+//                            chatMessage.setAtt4(true);
+//                            chatMessage.setPROId(j.getString("PROId"));
+//                            chatMessage.setApprovalId(j.getString("ApprovalId"));
+//                            chatMessage.setAutoDtlId(j.getString("AutoDtlId"));
+                            chatlist.add(chatMessage);
+                        }
+
+                    } else {
+
+                    }
+
+                } catch (Exception e) {
+                    Log.v("arman", e.getMessage());
+                }
+            }
+        };
+    }
+
+    /*class LoadTimer extends TimerTask{
+        public void run()
+        {
+            loadNextDataFromApi(5);
+        }
+
+    }*/
     public void loadNextDataFromApi(int offset) {
         // Send an API request to retrieve appropriate paginated data
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
@@ -99,27 +199,6 @@ public class ChatOperationActivity extends Activity {
         for (int i=100; i>0; i--){
             chatMessagesList.add(new ChatMessage("20772","11111",String.valueOf(i),"2",true ));
         }
-
-//        chatMessagesList.add(new ChatMessage("20772","11111","aaaaaaaaaaaaaa","2",true ));
-//
-//        chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));chatMessagesList.add(new ChatMessage("20772","11111","Hi there","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","Hi arman","2",false ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","what's up","2",true ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","so far...so good","2",false ));
-//        chatMessagesList.add(new ChatMessage("20772","11111","eeeeeeeeeeeee","2",true ));
 
 
         return  chatMessagesList;
