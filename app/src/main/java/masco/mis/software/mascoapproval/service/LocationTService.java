@@ -40,6 +40,9 @@ import java.util.Date;
 import java.util.List;
 
 import masco.mis.software.mascoapproval.Tapplication;
+import masco.mis.software.mascoapproval.auxiliary.Data;
+import masco.mis.software.mascoapproval.auxiliary.Database;
+import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
 import masco.mis.software.mascoapproval.auxiliary.Values;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
@@ -307,11 +310,21 @@ public class LocationTService extends Service implements
                 Toast.LENGTH_SHORT).show();
         try {
             TRequest tRequest = new TRequest();
-            tRequest.setDb("SCM");
-            tRequest.setSp("usp_m_set_location");
+            tRequest.setDb(Database.SCM);
+            tRequest.setSp(StoredProcedure.set_location);
             List<TParam> tParamList = new ArrayList<TParam>();
 
-            tParamList.add(new TParam("@EmpID", "44580"));
+
+            String empID = "";
+            try
+            {
+               empID =  Data.getUserID();
+            }
+            catch (Exception e)
+            {
+
+            }
+            tParamList.add(new TParam("@EmpID", empID));
             tParamList.add(new TParam("@DeviceID", Tapplication.ID()));
 
             tParamList.add(new TParam("@Lat", Double.toString(mCurrentLocation.getLatitude())));
@@ -321,7 +334,7 @@ public class LocationTService extends Service implements
             String urls = Values.ApiSetData;//"http://192.168.2.72/TWebApiSearch/api/v1/TService/SetData";
             JSONObject json = new JSONObject();
             json = new JSONObject(new Gson().toJson(tRequest, TRequest.class));
-            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, "http://192.168.2.72/TWebApiSearch/api/v1/TService/SaveData", json, loginListener(), genericErrorListener()));
+            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, Values.ApiGetData, json, loginListener(), genericErrorListener()));
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

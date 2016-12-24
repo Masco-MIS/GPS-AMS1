@@ -7,7 +7,6 @@ package masco.mis.software.mascoapproval.auxiliary;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Util {
     private static DateFormat dateFormat = new SimpleDateFormat("d MMM yyyy");
@@ -20,5 +19,6 @@ public class Util {
     public static String getCurrentDate() {
         return dateFormat.format(Calendar.getInstance().getTime());
     }
+
 
 }
