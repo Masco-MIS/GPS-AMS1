@@ -65,7 +65,7 @@ public class ChatAdapter extends BaseAdapter {
 
         // if message is mine then align to right
         if (message.isMine) {
-            layout.setBackgroundResource(R.drawable.bubble2);
+            layout.setBackgroundResource(R.drawable.bubble_blue2);
             parent_layout.setGravity(Gravity.RIGHT);
         }
         // If not mine then align to left
@@ -148,8 +148,15 @@ public class ChatAdapter extends BaseAdapter {
 
     private ArrayList<ChatMessage> MoreDemoChatMessage() {
         ArrayList<ChatMessage> chatMessagesList = new ArrayList<ChatMessage>();
+        boolean forwhom;
         for (int i = 100; i > 0; i--) {
-            chatMessagesList.add(new ChatMessage("20772", "11111", String.valueOf(i) + " " + System.currentTimeMillis(), "2", true));
+            if (i%2==0) {
+                forwhom=true;
+            }else {
+                forwhom=false;
+            }
+
+            chatMessagesList.add(new ChatMessage("20772", "11111", String.valueOf(i) + " " + System.currentTimeMillis(), "2", forwhom));
         }
         return chatMessagesList;
     }
