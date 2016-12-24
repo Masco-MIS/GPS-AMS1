@@ -1,6 +1,7 @@
 package masco.mis.software.mascoapproval;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -138,6 +139,7 @@ public class Tapplication extends Application {
         }
         return json;
     }
+
 
 
 

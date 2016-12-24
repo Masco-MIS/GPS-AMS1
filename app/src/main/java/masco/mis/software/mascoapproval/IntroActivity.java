@@ -2,6 +2,8 @@ package masco.mis.software.mascoapproval;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -27,12 +29,28 @@ public class IntroActivity extends Activity {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, per);
             } else {
-                Intent intent = new Intent(this, LocationTService.class);
-                startService(intent);
+                if (!isServiceRunning(LocationTService.class))
+                {
+                    Intent intent = new Intent(this, LocationTService.class);
+                    startService(intent);
+                }
+
             }
         }
+        Intent intentLogin = new Intent(IntroActivity.this,LoginActivity.class);
+        startActivity(intentLogin);
+        finish();
 
 
+    }
+    public  synchronized boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
