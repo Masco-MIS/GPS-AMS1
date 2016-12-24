@@ -1,11 +1,11 @@
 package masco.mis.software.mascoapproval;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Window;
@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import masco.mis.software.mascoapproval.DB.TDbOpenHelper;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
@@ -36,6 +37,7 @@ public class Tapplication extends Application {
     private static Context mContext;
     private static SharedPreferences sharedPref;
     private RequestQueue mRequestQueue;
+    private  static TDbOpenHelper tDbOpenHelper;
 
     public static Context getContext() {
         return mContext;
@@ -138,6 +140,24 @@ public class Tapplication extends Application {
             Toast.makeText(Tapplication.getContext(), "IN T :" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return json;
+    }
+    public static TDbOpenHelper getTDbHelper()
+    {
+        if (tDbOpenHelper ==null)
+        {
+            return new TDbOpenHelper(Tapplication.getContext());
+        }
+        return tDbOpenHelper;
+
+
+    }
+    public static SQLiteDatabase WriteDB()
+    {
+        return  Tapplication.getTDbHelper().getWritableDatabase();
+    }
+    public static SQLiteDatabase ReadDB()
+    {
+        return  Tapplication.getTDbHelper().getReadableDatabase();
     }
 
 

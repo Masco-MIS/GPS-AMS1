@@ -31,7 +31,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -39,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import masco.mis.software.mascoapproval.DB.TDbHelper;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.auxiliary.Data;
 import masco.mis.software.mascoapproval.auxiliary.Database;
@@ -306,15 +306,13 @@ public class LocationTService extends Service implements
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        Toast.makeText(this, mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude(),
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude(),
+//                Toast.LENGTH_SHORT).show();
         try {
             TRequest tRequest = new TRequest();
             tRequest.setDb(Database.SCM);
             tRequest.setSp(StoredProcedure.set_location);
-            List<TParam> tParamList = new ArrayList<TParam>();
-
-
+            final List<TParam> tParamList = new ArrayList<TParam>();
             String empID = "";
             try
             {
@@ -324,17 +322,32 @@ public class LocationTService extends Service implements
             {
 
             }
+
             tParamList.add(new TParam("@EmpID", empID));
             tParamList.add(new TParam("@DeviceID", Tapplication.ID()));
 
             tParamList.add(new TParam("@Lat", Double.toString(mCurrentLocation.getLatitude())));
             tParamList.add(new TParam("@Lon", Double.toString(mCurrentLocation.getLongitude())));
-            tParamList.add(new TParam("@Time", String.valueOf(DateFormat.getDateTimeInstance().format(new Date()))));
+            //new Date().getTime()
+           // tParamList.add(new TParam("@Time", String.valueOf(new Date().getTime())));
+         //   tParamList.add(new TParam("@Time", String.valueOf(DateFormat.getDateTimeInstance().format(new Date()))));
             tRequest.setDict(tParamList);
             String urls = Values.ApiSetData;//"http://192.168.2.72/TWebApiSearch/api/v1/TService/SetData";
             JSONObject json = new JSONObject();
             json = new JSONObject(new Gson().toJson(tRequest, TRequest.class));
-            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, Values.ApiGetData, json, loginListener(), genericErrorListener()));
+            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, Values.ApiGetData, json, loginListener(), new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    double EMPIDD = 0;
+                    if ( Data.getUserID()!=null)
+                    {
+                        EMPIDD = Double.valueOf(Data.getUserID());
+                    }
+
+               long iddd=     TDbHelper.insertLocation(TDbHelper.setLocatioContent(Double.valueOf(mCurrentLocation.getLatitude()),Double.valueOf(mCurrentLocation.getLongitude()),Double.valueOf(new Date().getTime()),Tapplication.ID(),Double.valueOf(EMPIDD)));
+                    Toast.makeText(LocationTService.this, "Inserted "+iddd, Toast.LENGTH_SHORT).show();
+                }
+            }));
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -442,10 +455,10 @@ public class LocationTService extends Service implements
             public void onResponse(JSONObject response) {
                 try {
 
-                    Gson Res = new Gson();
-
-                    JSONArray data = response.getJSONArray("data");
-                    Toast.makeText(LocationTService.this, response.toString(), Toast.LENGTH_SHORT).show();
+//                    Gson Res = new Gson();
+//
+//                    JSONArray data = response.getJSONArray("data");
+//                    Toast.makeText(LocationTService.this, response.toString(), Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {
                     Log.v("mango", e.getMessage());
