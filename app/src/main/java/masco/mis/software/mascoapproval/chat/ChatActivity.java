@@ -38,7 +38,7 @@ public class ChatActivity extends Activity {
                 ChatWeiget value = (ChatWeiget)adapterView.getItemAtPosition(i);
                 //Toast.makeText(Tapplication.getContext(), "Test :" + position, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Tapplication.getContext(), ChatOperationActivity.class);
-                intent.putExtra("to_emp_code",value.emp_code);
+                intent.putExtra("from_emp_code",value.emp_code);
                 startActivity(intent);
 
                 //Log.v("arman",String.valueOf(value.emp_code));

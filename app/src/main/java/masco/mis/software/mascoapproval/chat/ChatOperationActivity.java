@@ -3,13 +3,13 @@ package masco.mis.software.mascoapproval.chat;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -25,20 +25,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
-import masco.mis.software.mascoapproval.approval.OperationActivity;
-import masco.mis.software.mascoapproval.approval.OperationAdapter;
-import masco.mis.software.mascoapproval.approval.pojo.Operation;
 import masco.mis.software.mascoapproval.auxiliary.Data;
 import masco.mis.software.mascoapproval.auxiliary.Database;
 import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
@@ -52,14 +45,13 @@ import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
 public class ChatOperationActivity extends Activity {
 
     private EditText msg_edittext;
-    private String from_emp = "", to_emp = "";
-    private Random random;
+    private String emp_id_other, emp_id_mine;
     public static ArrayList<ChatMessage> chatlist;
     public static ChatAdapter chatAdapter;
-    ListView msgListView;
+    ListView msgListView = new ListView(Tapplication.getContext());
     ProgressDialog pDialog;
     JSONObject json = new JSONObject();
-
+    ScheduledExecutorService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +59,11 @@ public class ChatOperationActivity extends Activity {
         Tapplication.FullScreen(this);
         setContentView(R.layout.activity_chat_operation);
 
-        from_emp= Data.getUserID();
-
+        emp_id_mine = "20772";//Data.getUserID();
         Bundle bundle = getIntent().getExtras();
-        String to_emp = bundle.getString("to_emp_code");
-        Log.v("arman", "chat op ac!"+ " from:"+from_emp+" to"+to_emp);
+        emp_id_other = "11111";//bundle.getString("from_emp_code");
+        Log.v("arman", "chat op ac!" + " from:" + emp_id_other + " to" + emp_id_mine);
 
-
-       // random = new Random();
 
         msg_edittext = (EditText) findViewById(R.id.messageEditText);
         msgListView = (ListView) findViewById(R.id.msgListView);
@@ -95,15 +84,48 @@ public class ChatOperationActivity extends Activity {
 
 
         //todo api call to get chatMessage and do the rest on success
-        chatlist = DemoChatMessage();//new ArrayList<ChatMessage>();
+        GetChatMessageFromApi();
+
+        //service = Executors.newSingleThreadScheduledExecutor();
+//        service.scheduleWithFixedDelay(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.v("arman", "onCreate call from timer!");
+//                //GetChatMessageFromApi();
+//            }
+//        }, 0, 5, TimeUnit.SECONDS);
+
+       /* final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleWithFixedDelay(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                //boolean isScreenAwake = (Build.VERSION.SDK_INT < 20? powerManager.isScreenOn():powerManager.isInteractive());
+                boolean isScreenAwake = powerManager.isScreenOn();
+
+                if(isScreenAwake) {
+                    Log.v("arman", "call from timer!");
+                }
+
+
+            }
+        }, 1, 5, TimeUnit.SECONDS);*/
+
+
+    }
+    private void GetChatMessageFromApi(){
         try {
-            pDialog = Tapplication.pleaseWait(this, "Loading Messages...");
+            pDialog = Tapplication.pleaseWait(ChatOperationActivity.this, "Loading Messages...");
             pDialog.show();
             TRequest tRequest = new TRequest();
             tRequest.setSp("usp_m_getchatmessage");
             tRequest.setDb(Database.SCM);
             List<TParam> tParamList = new ArrayList<TParam>();
             tParamList.add(new TParam("@MessageID", "0"));
+            tParamList.add(new TParam("@EmpFrom", emp_id_other));
+            tParamList.add(new TParam("@EmpTo", emp_id_mine));
             tRequest.setDict(tParamList);
             Gson gson = new Gson();
             json = new JSONObject(gson.toJson(tRequest, TRequest.class));
@@ -119,28 +141,37 @@ public class ChatOperationActivity extends Activity {
                     ex.getMessage(),
                     Toast.LENGTH_LONG).show();
         }
-
-
-
-
-
-        chatAdapter = new ChatAdapter(this, chatlist);
-        msgListView.setAdapter(chatAdapter);
-
-        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleWithFixedDelay(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Log.v("arman", "call from timer!");
-            }
-        }, 1, 5, TimeUnit.SECONDS);
-
-
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        service.shutdown();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                Log.v("arman", "onResume call from timer!");
+
+                // Get a handler that can be used to post to the main thread
+                Handler mainHandler = new Handler(Tapplication.getContext().getMainLooper());
+
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        GetChatMessageFromApi();
+                    }
+                };
+                mainHandler.post(myRunnable);
+            }
+        }, 5, 10, TimeUnit.SECONDS);
+    }
 
     private Response.Listener<JSONObject> GetChatMessageOnSuccessListDataBind() {
         return new Response.Listener<JSONObject>() {
@@ -150,21 +181,24 @@ public class ChatOperationActivity extends Activity {
                     if (pDialog.isShowing()) {
                         pDialog.dismiss();
                     }
-                    Gson Res = new Gson();
+                    ArrayList<ChatMessage> tempchatMessagesList = new ArrayList<ChatMessage>();
+                    //Gson Res = new Gson();
                     JSONArray data = response.getJSONArray("data");
                     if (data.length() > 0) {
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject j = data.getJSONObject(i);
-                            ChatMessage chatMessage = new ChatMessage("20772","11111",String.valueOf(i),"2",true );
-//                            chatMessage.setAtt1(j.getString("Att1"));
-//                            chatMessage.setAtt2(j.getString("Att2"));
-//                            chatMessage.setAtt3(j.getString("Att3"));
-//                            chatMessage.setAtt4(true);
-//                            chatMessage.setPROId(j.getString("PROId"));
-//                            chatMessage.setApprovalId(j.getString("ApprovalId"));
-//                            chatMessage.setAutoDtlId(j.getString("AutoDtlId"));
-                            chatlist.add(chatMessage);
+                            ChatMessage chatMessage = new ChatMessage(
+                                    j.getString("MessageEMP_IDFrom"),
+                                    j.getString("MessageEMP_IDTo"),
+                                    j.getString("MessageText"),
+                                    j.getString("MessageID"),
+                                    Boolean.parseBoolean(j.getString("isMINE")));
+                            tempchatMessagesList.add(chatMessage);
                         }
+
+                        chatlist = tempchatMessagesList;
+                        chatAdapter = new ChatAdapter(ChatOperationActivity.this, chatlist);
+                        msgListView.setAdapter(chatAdapter);
 
                     } else {
 
@@ -177,38 +211,12 @@ public class ChatOperationActivity extends Activity {
         };
     }
 
-    /*class LoadTimer extends TimerTask{
-        public void run()
-        {
-            loadNextDataFromApi(5);
-        }
-
-    }*/
-    public void loadNextDataFromApi(int offset) {
-        // Send an API request to retrieve appropriate paginated data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        //  --> Deserialize and construct new model objects from the API response
-        //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyDataSetChanged()`
-        Toast.makeText(getApplicationContext(),"api call for next 50",Toast.LENGTH_SHORT).show();
-    }
-    private ArrayList<ChatMessage> DemoChatMessage()
-    {
-        ArrayList<ChatMessage> chatMessagesList = new ArrayList<ChatMessage>();
-
-        for (int i=100; i>0; i--){
-            chatMessagesList.add(new ChatMessage("20772","11111",String.valueOf(i),"2",true ));
-        }
-
-
-        return  chatMessagesList;
-    }
 
     public void sendTextMessage(View v) {
         String message = msg_edittext.getEditableText().toString();
         if (!message.equalsIgnoreCase("")) {
-            final ChatMessage chatMessage = new ChatMessage(from_emp, to_emp,
-                    message, "" + random.nextInt(1000), true);
+            final ChatMessage chatMessage = new ChatMessage(emp_id_mine, emp_id_other,
+                    message, "" + 0, true);
             chatMessage.setMsgID();
             chatMessage.body = message;
             chatMessage.Date = Util.getCurrentDate();
@@ -244,23 +252,23 @@ public class ChatOperationActivity extends Activity {
         }
     }
 
-    private Response.ErrorListener saveMessageError(){
+    private Response.ErrorListener saveMessageError() {
         return new Response.ErrorListener() {
             public void onErrorResponse(VolleyError error) {
                 try {
                     if (error instanceof NoConnectionError) {
-                        Toast.makeText(Tapplication.getContext(),"No Connection",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Tapplication.getContext(), "No Connection", Toast.LENGTH_SHORT).show();
                     } else if (error instanceof NetworkError) {
-                        Toast.makeText(Tapplication.getContext(),"Network Error",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Tapplication.getContext(), "Network Error", Toast.LENGTH_SHORT).show();
                     } else if (error instanceof ServerError) {
-                        Toast.makeText(Tapplication.getContext(),"Server Error",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Tapplication.getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                     } else if (error instanceof TimeoutError) {
-                        Toast.makeText(Tapplication.getContext(),"Timeout",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Tapplication.getContext(), "Timeout", Toast.LENGTH_SHORT).show();
                     } else if (error instanceof VolleyError) {
-                        Toast.makeText(Tapplication.getContext(),"Volley Error",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Tapplication.getContext(), "Volley Error", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    Log.v("arman",e.toString());
+                    Log.v("arman", e.toString());
                 }
             }
 

@@ -13,13 +13,12 @@ public class ChatMessage {
     public String msgid;
     public boolean isMine;// Did I send the message.
 
-    public ChatMessage(String Sender, String Receiver, String messageString,
-                       String ID, boolean isMINE) {
+    public ChatMessage(String From, String To, String messageString,String ID, boolean isMINE) {
         body = messageString;
         isMine = isMINE;
-        sender = Sender;
+        sender = From;
         msgid = ID;
-        receiver = Receiver;
+        receiver = To;
         senderName = sender;
     }
 
