@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "711525385744",
+    "project_id": "mascoapp-153309"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711525385744:android:5b1b0454d3356a38",
+        "android_client_info": {
+          "package_name": "masco.mis.software.mascoapproval"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDDDeQk2YaXBmMR0J4hjfiTqVYTn2caDg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-89455247-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

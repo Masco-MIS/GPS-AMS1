@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import masco.mis.software.mascoapproval.DB.LocationContract;
 import masco.mis.software.mascoapproval.DB.TDbHelper;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.auxiliary.Data;
@@ -194,17 +196,19 @@ public class LocationTService extends Service implements
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
 
-        // Sets the desired interval for active location updates. This interval is
-        // inexact. You may not receive updates at all if no location sources are available, or
-        // you may receive them slower than requested. You may also receive updates faster than
-        // requested if other applications are requesting location at a faster interval.
+//        // Sets the desired interval for active location updates. This interval is
+//        // inexact. You may not receive updates at all if no location sources are available, or
+//        // you may receive them slower than requested. You may also receive updates faster than
+//        // requested if other applications are requesting location at a faster interval.
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-
-        // Sets the fastest rate for active location updates. This interval is exact, and your
-        // application will never receive updates faster than this value.
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+//
+//        // Sets the fastest rate for active location updates. This interval is exact, and your
+//        // application will never receive updates faster than this value.
+       mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+     //   mLocationRequest.setSmallestDisplacement(10);
 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
 
 
     }
@@ -240,9 +244,8 @@ public class LocationTService extends Service implements
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(
                         mGoogleApiClient, mLocationRequest, this);
-            }
-            else
-            {
+
+            } else {
                 Toast.makeText(this, "Please Provide Permission", Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -274,9 +277,11 @@ public class LocationTService extends Service implements
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                      //  mCurrentLocation = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,)
                     }
                 } else {
                     mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                //    LocationServices.FusedLocationApi.
                 }
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
                 //  updateUI();
@@ -314,12 +319,9 @@ public class LocationTService extends Service implements
             tRequest.setSp(StoredProcedure.set_location);
             final List<TParam> tParamList = new ArrayList<TParam>();
             String empID = "";
-            try
-            {
-               empID =  Data.getUserID();
-            }
-            catch (Exception e)
-            {
+            try {
+                empID = Data.getUserID();
+            } catch (Exception e) {
 
             }
 
@@ -329,8 +331,8 @@ public class LocationTService extends Service implements
             tParamList.add(new TParam("@Lat", Double.toString(mCurrentLocation.getLatitude())));
             tParamList.add(new TParam("@Lon", Double.toString(mCurrentLocation.getLongitude())));
             //new Date().getTime()
-           // tParamList.add(new TParam("@Time", String.valueOf(new Date().getTime())));
-         //   tParamList.add(new TParam("@Time", String.valueOf(DateFormat.getDateTimeInstance().format(new Date()))));
+            // tParamList.add(new TParam("@Time", String.valueOf(new Date().getTime())));
+            //   tParamList.add(new TParam("@Time", String.valueOf(DateFormat.getDateTimeInstance().format(new Date()))));
             tRequest.setDict(tParamList);
             String urls = Values.ApiSetData;//"http://192.168.2.72/TWebApiSearch/api/v1/TService/SetData";
             JSONObject json = new JSONObject();
@@ -339,13 +341,12 @@ public class LocationTService extends Service implements
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     double EMPIDD = 0;
-                    if ( Data.getUserID()!=null)
-                    {
+                    if (Data.getUserID() != null && Data.getUserID()!="") {
                         EMPIDD = Double.valueOf(Data.getUserID());
                     }
-
-               long iddd=     TDbHelper.insertLocation(TDbHelper.setLocatioContent(Double.valueOf(mCurrentLocation.getLatitude()),Double.valueOf(mCurrentLocation.getLongitude()),Double.valueOf(new Date().getTime()),Tapplication.ID(),Double.valueOf(EMPIDD)));
-                    Toast.makeText(LocationTService.this, "Inserted "+iddd, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LocationTService.this, ""+Double.valueOf(mCurrentLocation.getLatitude()), Toast.LENGTH_SHORT).show();
+                    long iddd = TDbHelper.insertLocation(TDbHelper.setLocatioContent(String.valueOf(mCurrentLocation.getLatitude()), String.valueOf(mCurrentLocation.getLongitude()), Double.valueOf(new Date().getTime()), Tapplication.ID(), Double.valueOf(EMPIDD)));
+                    Toast.makeText(LocationTService.this, "Inserted " + iddd + " "+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
                 }
             }));
         } catch (Exception e) {
@@ -454,11 +455,87 @@ public class LocationTService extends Service implements
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    String[] projection = {
+                            LocationContract.LocationEntry._ID,
+                            LocationContract.LocationEntry.COLUMN_NAME_EMPID,
+                            LocationContract.LocationEntry.COLUMN_NAME_DEVICEID,
+                            LocationContract.LocationEntry.COLUMN_NAME_LAT,
+                            LocationContract.LocationEntry.COLUMN_NAME_LON,
+                            LocationContract.LocationEntry.COLUMN_NAME_TIME
+                    };
+                    List<List<TParam>> tParamListS = new ArrayList<List<TParam>>();
+                    Cursor cursor = Tapplication.ReadDB().query(
+                            LocationContract.LocationEntry.TABLE_NAME,                     // The table to query
+                            projection,                               // The columns to return
+                            null,                                // The columns for the WHERE clause
+                            null,                            // The values for the WHERE clause
+                            null,                                     // don't group the rows
+                            null,                                     // don't filter by row groups
+                            null                                 // The sort order
+                    );
 
-//                    Gson Res = new Gson();
-//
-//                    JSONArray data = response.getJSONArray("data");
-//                    Toast.makeText(LocationTService.this, response.toString(), Toast.LENGTH_SHORT).show();
+                    final List<Long> tss = new ArrayList<Long>();
+                    final List itemIds = new ArrayList<>();
+                    while (cursor.moveToNext()) {
+                        long itemId = cursor.getLong(
+                                cursor.getColumnIndexOrThrow(LocationContract.LocationEntry._ID));
+                        itemIds.add(itemId);
+                        List<TParam> tinnerParam = new ArrayList<TParam>();
+                        String lt = cursor.getString(cursor.getColumnIndexOrThrow(LocationContract.LocationEntry.COLUMN_NAME_LAT));
+                        String ln = cursor.getString(cursor.getColumnIndexOrThrow(LocationContract.LocationEntry.COLUMN_NAME_LON));
+                        long tm = cursor.getLong(cursor.getColumnIndexOrThrow(LocationContract.LocationEntry.COLUMN_NAME_TIME));
+                        long eid = 0;
+                        try {
+                            eid = cursor.getLong(cursor.getColumnIndexOrThrow(LocationContract.LocationEntry.COLUMN_NAME_EMPID));
+                        } catch (Exception e) {
+
+                        }
+
+                        String did = cursor.getString(cursor.getColumnIndexOrThrow(LocationContract.LocationEntry.COLUMN_NAME_DEVICEID));
+                        tinnerParam.add(new TParam("@EmpID", String.valueOf(eid)));
+                        tinnerParam.add(new TParam("@DeviceID", String.valueOf(did)));
+                        tinnerParam.add(new TParam("@Lat", String.valueOf(lt)));
+                        tinnerParam.add(new TParam("@Lon", String.valueOf(ln)));
+                        tinnerParam.add(new TParam("@TIME", String.valueOf(tm)));
+                        tParamListS.add(tinnerParam);
+
+
+                    }
+                    cursor.close();
+
+                    if (tParamListS.size()>0)
+                    {
+                        TRequest tRequest = new TRequest();
+                        tRequest.setDb(Database.SCM);
+                        tRequest.setSp(StoredProcedure.set_location_bulk);
+                        tRequest.setDictList(tParamListS);
+                        JSONObject json = new JSONObject();
+                        json = new JSONObject(new Gson().toJson(tRequest, TRequest.class));
+                        Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, Values.ApiSetDataList, json, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Toast.makeText(LocationTService.this, response.toString(), Toast.LENGTH_SHORT).show();
+                                String selection = LocationContract.LocationEntry._ID + " = ?";
+                                String[] addddd = new String[itemIds.size()];
+                                for (int i = 0; i < itemIds.size(); i++
+                                        ) {
+                                    String[] a = new String[1];
+                                    a[0] = String.valueOf(itemIds.get(i));
+
+                                    addddd[i] = String.valueOf(Tapplication.WriteDB().delete(LocationContract.LocationEntry.TABLE_NAME, selection, a));
+                                }
+                                String dddsdsd = "asdasd";
+
+                                //     Tapplication.WriteDB().delete(LocationContract.LocationEntry.TABLE_NAME, selection, addddd);
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(LocationTService.this, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }));
+                    }
 
                 } catch (Exception e) {
                     Log.v("mango", e.getMessage());

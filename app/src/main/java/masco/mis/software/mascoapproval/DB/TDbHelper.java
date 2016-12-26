@@ -9,7 +9,7 @@ import masco.mis.software.mascoapproval.Tapplication;
  */
 
 public class TDbHelper {
-    public static ContentValues setLocatioContent(double lat,double lon,double time,String deviceid,double emp)
+    public static ContentValues setLocatioContent(String lat,String lon,double time,String deviceid,double emp)
     {
         ContentValues values = new ContentValues();
         values.put(LocationContract.LocationEntry.COLUMN_NAME_LAT, lat);

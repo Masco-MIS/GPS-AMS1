@@ -10,13 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TDbOpenHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "TDB.db";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + LocationContract.LocationEntry.TABLE_NAME + " (" +
                     LocationContract.LocationEntry._ID + " INTEGER PRIMARY KEY," +
-                    LocationContract.LocationEntry.COLUMN_NAME_LAT + " REAL ," +
-                    LocationContract.LocationEntry.COLUMN_NAME_LON + " REAL ," +
+                    LocationContract.LocationEntry.COLUMN_NAME_LAT + " TEXT ," +
+                    LocationContract.LocationEntry.COLUMN_NAME_LON + " TEXT ," +
                     LocationContract.LocationEntry.COLUMN_NAME_TIME + " REAL ," +
                     LocationContract.LocationEntry.COLUMN_NAME_DEVICEID + " TEXT ," +
                     LocationContract.LocationEntry.COLUMN_NAME_EMPID + " REAL)";
