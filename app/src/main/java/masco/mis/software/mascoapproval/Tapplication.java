@@ -223,6 +223,18 @@ public class Tapplication extends Application {
             dst.close();
         }
     }
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(base);
+//
+//        // Create an ConfigurationBuilder. It is prepopulated with values specified via annotation.
+//        // Set any additional value of the builder and then use it to construct an ACRAConfiguration.
+//
+//        final ACRAConfiguration config = new ConfigurationBuilder(this).build();
+//
+//        // Initialise ACRA
+//        ACRA.init(this, config);
+//    }
 
 
 
