@@ -1,5 +1,6 @@
 package masco.mis.software.mascoapproval;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,9 +46,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import masco.mis.software.mascoapproval.approval.AutoCompleteAdapter;
 import masco.mis.software.mascoapproval.auxiliary.Data;
 import masco.mis.software.mascoapproval.auxiliary.Database;
 import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
+import masco.mis.software.mascoapproval.pojo.Employee;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
@@ -87,6 +93,9 @@ public class MapActivity extends AppCompatActivity implements
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
     HashSet<Marker> markerHashSet = new HashSet<Marker>();
+    AutoCompleteTextView auto;
+    AutoCompleteAdapter adapter;
+    int mempid = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +109,24 @@ public class MapActivity extends AppCompatActivity implements
 
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_map);
+        auto = (AutoCompleteTextView) findViewById(R.id.auto_map_search);
+        auto.setThreshold(1);
+        auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Employee model = (Employee) view.getTag();
+                Toast.makeText(MapActivity.this, "im hit" + model.getEmpName(), Toast.LENGTH_SHORT).show();
+                mempid = Integer.valueOf(model.getEmpID());
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+
+            }
+        });
+
+        init();
+
+
         // Build the Play services client for use by the Fused Location Provider and the Places API.
         buildGoogleApiClient();
         mGoogleApiClient.connect();
@@ -275,7 +302,6 @@ public class MapActivity extends AppCompatActivity implements
          * application will never receive updates faster than this value.
          */
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -372,7 +398,10 @@ public class MapActivity extends AppCompatActivity implements
                     .snippet(getString(R.string.default_info_snippet)));
         }
         try {
-            fetchLocation();
+            if (mempid > 0) {
+                fetchLocation();
+            }
+
         } catch (Exception e) {
             Toast.makeText(this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -397,11 +426,11 @@ public class MapActivity extends AppCompatActivity implements
         }
     }
 
-    void addMarkerToHashSet(double lat, double lon,String time) {
+    void addMarkerToHashSet(double lat, double lon, String time) {
         Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
                 .title("Shah Alam")
-                .snippet("Time: "+time));
+                .snippet("Time: " + time));
 //        Marker marker = map.addMarker(new MarkerOptions()
 //                .position(new LatLng(37.7750, 122.4183))
 //                .title("San Francisco")
@@ -409,11 +438,23 @@ public class MapActivity extends AppCompatActivity implements
         markerHashSet.add(marker);
     }
 
+    void removeMarkers() {
+        for (Marker mark : markerHashSet)
+        {
+            mark.remove();
+        }
+        markerHashSet.clear();
+    }
+
     void fetchLocation() {
         TRequest tRequest = new TRequest();
         tRequest.setSp(StoredProcedure.get_location_of_other);
         tRequest.setDb(Database.SCM);
         List<TParam> tParamList = new ArrayList<TParam>();
+        if (mempid > 0) {
+            tParamList.add(new TParam("@id", String.valueOf(mempid)));
+        }
+
         JSONObject json;
         tRequest.setDict(tParamList);
         Gson gson = new Gson();
@@ -423,28 +464,65 @@ public class MapActivity extends AppCompatActivity implements
                 @Override
                 public void onResponse(JSONObject response) {
 
-                    try
-                    {
+                    try {
                         JSONArray data = response.getJSONArray("data");
                         if (data.length() > 0) {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject j = data.getJSONObject(i);
-                                addMarkerToHashSet(j.getDouble("Lat"),j.getDouble("Lon"),j.getString("Time"));
+                                addMarkerToHashSet(j.getDouble("Lat"), j.getDouble("Lon"), j.getString("Time"));
                             }
-
 
 
                         } else {
 
                         }
-                    }
-                    catch (Exception e)
-                    {
-
+                    } catch (Exception e) {
+                        Log.v("mango", e.getMessage());
                     }
                 }
             }, Data.genericErrorListener(null, MapActivity.this)));
 
+        } catch (Exception e) {
+            Log.v("mango", e.getMessage());
+        }
+    }
+
+    public void init() {
+        try {
+            TRequest tRequest = new TRequest();
+            tRequest.setSp(StoredProcedure.sp_get_emp_list);
+            tRequest.setDb(getString(R.string.DB_SCM));
+            List<TParam> tParamList = new ArrayList<TParam>();
+            tRequest.setDict(tParamList);
+            Gson gson = new Gson();
+            JSONObject json = new JSONObject(gson.toJson(tRequest, TRequest.class));
+            Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, ApiGetData, json, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        ArrayList<Employee> lstData = new ArrayList<Employee>();
+                        JSONArray data = response.getJSONArray("data");
+                        if (data.length() > 0) {
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject j = data.getJSONObject(i);
+                                Employee employee = new Employee();
+                                employee.setEmpNo(j.getString("EmpNo"));
+                                employee.setEmpID(j.getString("EmpID"));
+                                employee.setEmpName(j.getString("EmpName"));
+                                employee.setEmpDept(j.getString("EmpDept"));
+                                employee.setEmpDesignation(j.getString("EmpDesignation"));
+                                lstData.add(employee);
+                            }
+                        }
+                        Data.setEmployees(lstData);
+                        adapter = new AutoCompleteAdapter(MapActivity.this, R.layout.auto_emp_row_item, (ArrayList<Employee>) Data.getEmployees());
+                        auto.setAdapter(adapter);
+                    } catch (Exception e) {
+                        Toast.makeText(MapActivity.this, "In map " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, Data.genericErrorListener(null, this)));
         } catch (Exception e) {
 
         }
