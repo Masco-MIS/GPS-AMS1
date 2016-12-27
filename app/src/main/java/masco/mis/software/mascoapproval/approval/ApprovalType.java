@@ -19,28 +19,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.auxiliary.Data;
-
 import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
 import masco.mis.software.mascoapproval.pojo.Employee;
 import masco.mis.software.mascoapproval.pojo.TParam;
-import masco.mis.software.mascoapproval.pojo.TRequest;
-
-
-
 
 import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
 
@@ -129,7 +113,7 @@ public class ApprovalType extends Activity {
 
         if (Data.getEmployees().size() == 0) {
             List<TParam> params = new ArrayList<>();
-            JSONObject json = Tapplication.intiJson(getString(R.string.get_emp_list), getString(R.string.DB_SCM), params);
+            JSONObject json = Tapplication.intiJson(StoredProcedure.sp_get_emp_list, getString(R.string.DB_SCM), params);
             Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, ApiGetData, json, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
