@@ -59,9 +59,9 @@ public class ChatOperationActivity extends Activity {
         Tapplication.FullScreen(this);
         setContentView(R.layout.activity_chat_operation);
 
-        emp_id_mine = "20772";//Data.getUserID();
+        emp_id_mine = Data.getUserID();
         Bundle bundle = getIntent().getExtras();
-        emp_id_other = "11111";//bundle.getString("from_emp_code");
+        emp_id_other = bundle.getString("from_emp_code");
         Log.v("arman", "chat op ac!" + " from:" + emp_id_other + " to" + emp_id_mine);
 
 
@@ -165,7 +165,7 @@ public class ChatOperationActivity extends Activity {
                 Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        GetChatMessageFromApi();
+                        //GetChatMessageFromApi();
                     }
                 };
                 mainHandler.post(myRunnable);
