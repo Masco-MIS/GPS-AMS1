@@ -13,10 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import masco.mis.software.mascoapproval.R;
+import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.chat.pojo.ChatMessage;
 
 /**
@@ -51,7 +53,7 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ChatMessage message = (ChatMessage) chatMessageList.get(position);
+        ChatMessage message = chatMessageList.get(position);
         View vi = convertView;
         if (convertView == null)
             vi = inflater.inflate(R.layout.chatbubble, null);
@@ -120,9 +122,10 @@ public class ChatAdapter extends BaseAdapter {
                 Log.v("arman", "isScrollCompleted... /firstVisibleItem:" + currentFirstVisibleItem +
                         "/visibleItemCount" + currentVisibleItemCount + "/totalItemCount" + totalItem);
                 if (currentFirstVisibleItem == 0
-                        && this.currentScrollState == SCROLL_STATE_IDLE) {
+                        && this.currentScrollState == SCROLL_STATE_TOUCH_SCROLL) {
                     /** To do code here*/
-                    Log.v("arman", "load more from api");
+                    Log.v("arman", "end of list...");
+                    Toast.makeText(Tapplication.getContext(),"end of list...",Toast.LENGTH_LONG);
 
                     //  chatMessageList.addAll(MoreDemoChatMessage());
                     for (ChatMessage item : MoreDemoChatMessage()) {
