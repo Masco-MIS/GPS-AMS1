@@ -165,7 +165,7 @@ public class ChatOperationActivity extends Activity {
                 Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        //GetChatMessageFromApi();
+                        GetChatMessageFromApi();
                     }
                 };
                 mainHandler.post(myRunnable);
