@@ -108,10 +108,14 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
         chkOperationAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    adapter.getItem(i).setAtt4(b);
+                if (adapter.getCount()>0)
+                {
+                    for (int i = 0; i < adapter.getCount(); i++) {
+                        adapter.getItem(i).setAtt4(b);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
+
 
             }
         });
