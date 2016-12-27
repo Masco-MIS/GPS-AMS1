@@ -37,15 +37,12 @@ import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.approval.pojo.Operation;
 import masco.mis.software.mascoapproval.auxiliary.Data;
-
 import masco.mis.software.mascoapproval.auxiliary.Database;
 import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
-
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
 import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
-
 import static masco.mis.software.mascoapproval.auxiliary.Values.ApiSetDataList;
 
 
@@ -84,7 +81,7 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
         super.onCreate(savedInstanceState);
         Tapplication.FullScreen(OperationActivity.this);
         setContentView(R.layout.activity_operation);
-        edtFilterListview = (EditText)findViewById(R.id.edt_operation_filter_list_view);
+        edtFilterListview = (EditText) findViewById(R.id.edt_operation_filter_list_view);
         edtFilterListview.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -108,13 +105,20 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
         chkOperationAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (adapter.getCount()>0)
+                try
                 {
-                    for (int i = 0; i < adapter.getCount(); i++) {
-                        adapter.getItem(i).setAtt4(b);
+                    if (adapter != null) {
+                        for (int i = 0; i < adapter.getCount(); i++) {
+                            adapter.getItem(i).setAtt4(b);
+                        }
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.notifyDataSetChanged();
                 }
+                catch (Exception e )
+                {
+                    Log.e("mango",e.getMessage() );
+                }
+
 
 
             }
