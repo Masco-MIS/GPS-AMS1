@@ -57,7 +57,6 @@ public class AutoCompleteAdapter extends ArrayAdapter<Employee> {
     }
 
 
-
     @Override
     public Filter getFilter() {
         return nameFilter;

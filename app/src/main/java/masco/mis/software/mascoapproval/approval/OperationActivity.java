@@ -37,13 +37,17 @@ import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.approval.pojo.Operation;
 import masco.mis.software.mascoapproval.auxiliary.Data;
+
 import masco.mis.software.mascoapproval.auxiliary.Database;
 import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
+
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
 import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
+
 import static masco.mis.software.mascoapproval.auxiliary.Values.ApiSetDataList;
+
 
 public class OperationActivity extends Activity implements AdapterView.OnItemClickListener {
     ListView lstView;
@@ -51,9 +55,11 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
     List<Operation> list = new ArrayList<Operation>();
     JSONObject json = new JSONObject();
     ProgressDialog pDialog;
+
     ImageButton btnOperationSubmit;
     CheckBox chkOperationAll;
     EditText edtFilterListview;
+
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
@@ -178,7 +184,9 @@ public class OperationActivity extends Activity implements AdapterView.OnItemCli
             tRequest.setDb(Database.SCM);
             List<TParam> tParamList = new ArrayList<TParam>();
             tParamList.add(new TParam("@id", Data.getUserID()));
+
             tParamList.add(new TParam("@ApprovalTypeId", "1"));
+
             tRequest.setDict(tParamList);
             Gson gson = new Gson();
             json = new JSONObject(gson.toJson(tRequest, TRequest.class));
