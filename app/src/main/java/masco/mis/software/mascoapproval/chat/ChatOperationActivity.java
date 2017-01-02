@@ -249,6 +249,7 @@ public class ChatOperationActivity extends Activity {
                     "http://mis.mascoknit.com:8095/api/v1/TService/SaveData", json, saveMessageSuccess(), saveMessageError()));
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.v("arman",e.getMessage());
         }
     }
 
