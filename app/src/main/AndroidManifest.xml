@@ -20,20 +20,24 @@
             android:value="AIzaSyC7UKI8yiVrzUllwLS3V2_b-H5Mor54KGc" />
 
         <activity android:name=".MapActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".HomeActivity">
 
@@ -45,11 +49,11 @@
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".IntroActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <service
@@ -77,7 +81,9 @@
         <activity android:name=".approval.OperationActivity" />
         <activity android:name=".chat.ChatActivity" />
         <activity android:name=".chat.ChatOperationActivity" />
+        <activity android:name=".chart.TestChartActivity">
 
+        </activity>
     </application>
 
 </manifest>

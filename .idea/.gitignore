@@ -3,3 +3,5 @@
 /local.properties
 .workspace.xml
 /libraries
+/misc.xml
+!/modules.xml
