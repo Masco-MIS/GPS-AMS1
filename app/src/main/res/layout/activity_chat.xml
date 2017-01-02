@@ -10,28 +10,47 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        />
+        android:layout_height="10dp" />
 
 
     <fragment
-        android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
         android:id="@+id/frag_root_quickmenu"
+        android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_quick_menu" />
 
-
-
-    <ListView
-        android:id="@+id/lv_home_chatlist"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:dividerHeight="3dp">
+        android:layout_height="match_parent">
 
-    </ListView>
+        <ListView
+            android:id="@+id/lv_home_chatlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:dividerHeight="3dp">
+
+        </ListView>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_chat_newchatmessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="@android:drawable/ic_dialog_email"
+
+            />
+    </FrameLayout>
+
 
 </LinearLayout>
+
+
+
+
+
+

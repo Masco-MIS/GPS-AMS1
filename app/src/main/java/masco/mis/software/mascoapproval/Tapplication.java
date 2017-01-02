@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
@@ -24,6 +25,7 @@ import java.util.List;
 
 import masco.mis.software.mascoapproval.DB.TDbOpenHelper;
 
+import masco.mis.software.mascoapproval.auxiliary.LruBitmapCache;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
@@ -40,6 +42,7 @@ public class Tapplication extends Application {
     private static SharedPreferences sharedPref;
     private RequestQueue mRequestQueue;
     private  static TDbOpenHelper tDbOpenHelper;
+    private ImageLoader mImageLoader;
 
     public static Context getContext() {
         return mContext;
@@ -166,7 +169,14 @@ public class Tapplication extends Application {
 
 
 
-
+    public ImageLoader getImageLoader() {
+        getRequestQueue();
+        if (mImageLoader == null) {
+            mImageLoader = new ImageLoader(this.mRequestQueue,
+                    new LruBitmapCache());
+        }
+        return this.mImageLoader;
+    }
 
 
 }

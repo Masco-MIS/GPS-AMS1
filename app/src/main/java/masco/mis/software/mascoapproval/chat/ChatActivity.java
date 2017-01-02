@@ -28,14 +28,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import masco.mis.software.mascoapproval.ChatWeigetArrayAdapter;
-import masco.mis.software.mascoapproval.HomeActivity;
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.auxiliary.Data;
 import masco.mis.software.mascoapproval.auxiliary.Database;
-import masco.mis.software.mascoapproval.chat.pojo.ChatMessage;
-import masco.mis.software.mascoapproval.pojo.ChatWeiget;
+import masco.mis.software.mascoapproval.chat.pojo.ChatWeiget;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
 
@@ -44,6 +41,7 @@ import static masco.mis.software.mascoapproval.auxiliary.Values.ApiGetData;
 public class ChatActivity extends Activity {
     ProgressDialog pDialog;
     JSONObject json = new JSONObject();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,19 +58,20 @@ public class ChatActivity extends Activity {
 
 
                 //ListView mListView = (ListView) view.getParent().getParent();
-                ChatWeiget value = (ChatWeiget)adapterView.getItemAtPosition(i);
+                ChatWeiget value = (ChatWeiget) adapterView.getItemAtPosition(i);
                 //Toast.makeText(Tapplication.getContext(), "Test :" + position, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Tapplication.getContext(), ChatOperationActivity.class);
-                intent.putExtra("from_emp_code",value.emp_code);
+                intent.putExtra("from_emp_code", value.emp_Code);
                 startActivity(intent);
 
-                //Log.v("arman",String.valueOf(value.emp_code));
+                //Log.v("arman",String.valueOf(value.emp_Code));
             }
         });
 
 
     }
-    private void GetChatEmpListFromApi(){
+
+    private void GetChatEmpListFromApi() {
         try {
             pDialog = Tapplication.pleaseWait(ChatActivity.this, "Loading Chat List...");
             pDialog.show();
@@ -99,6 +98,7 @@ public class ChatActivity extends Activity {
                     Toast.LENGTH_LONG).show();
         }
     }
+
     private Response.Listener<JSONObject> GetChatEmpListOnSuccessListDataBind() {
         return new Response.Listener<JSONObject>() {
             @Override
@@ -110,13 +110,14 @@ public class ChatActivity extends Activity {
                     ArrayList<ChatWeiget> chatWeigetList = new ArrayList<ChatWeiget>();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("hh.mm a");
                     String formattedDate = dateFormat.format(new Date()).toString();
-
+                    Log.v("arman", "network call for chat emp list");
                     //Gson Res = new Gson();
                     JSONArray data = response.getJSONArray("data");
                     if (data.length() > 0) {
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject j = data.getJSONObject(i);
                             ChatWeiget chatWeiget = new ChatWeiget(
+                                    j.getString("EMP_IMGURL"),
                                     j.getString("EMP_ID"),
                                     j.getString("EMP_ENAME"),
                                     j.getString("EMP_DESIG"),
@@ -127,7 +128,7 @@ public class ChatActivity extends Activity {
 
                         // Create the adapter to convert the array to views
                         int layoutId = R.layout.layout_home_chatweiget;
-                        ChatWeigetArrayAdapter adapter = new ChatWeigetArrayAdapter(Tapplication.getContext(), layoutId ,chatWeigetList);
+                        ChatWeigetArrayAdapter adapter = new ChatWeigetArrayAdapter(Tapplication.getContext(), layoutId, chatWeigetList);
 
                         // Attach the adapter to a ListView
                         ListView listView = (ListView) findViewById(R.id.lv_home_chatlist);
@@ -143,6 +144,7 @@ public class ChatActivity extends Activity {
             }
         };
     }
+
     private Response.ErrorListener saveMessageError() {
         return new Response.ErrorListener() {
             public void onErrorResponse(VolleyError error) {
@@ -165,13 +167,14 @@ public class ChatActivity extends Activity {
 
         };
     }
+
     private void populateChatList() {
         // Construct the data source
         ArrayList<ChatWeiget> arrayOfChatWeiget = ChatWeiget.getChatWeigetList();
 
         // Create the adapter to convert the array to views
         int layoutId = R.layout.layout_home_chatweiget;
-        ChatWeigetArrayAdapter adapter = new ChatWeigetArrayAdapter(this, layoutId ,arrayOfChatWeiget);
+        ChatWeigetArrayAdapter adapter = new ChatWeigetArrayAdapter(this, layoutId, arrayOfChatWeiget);
 
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.lv_home_chatlist);
