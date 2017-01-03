@@ -136,6 +136,7 @@ public class ApprovalType extends Activity {
                                 employee.setEmpDept(j.getString("EmpDept"));
                                 employee.setEmpSection(j.getString("EmpSection"));
                                 employee.setEmpDesignation(j.getString("EmpDesignation"));
+                                employee.setEmpImage(j.getString("EmpImage"));
                                 lstData.add(employee);
                             }
 //                            JSONObject s = new Gson().toJson(lstData,lstData.getClass());

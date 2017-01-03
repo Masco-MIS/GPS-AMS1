@@ -8,9 +8,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.ArrayList;
 
 import masco.mis.software.mascoapproval.R;
+import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.pojo.Employee;
 
 /**
@@ -47,11 +50,14 @@ public class AutoCompleteAdapter extends ArrayAdapter<Employee> {
         TextView dept = (TextView) view.findViewById(R.id.txt_auto_emp_row_dept);
         TextView designation = (TextView) view.findViewById(R.id.txt_auto_emp_row_designation);
         TextView no = (TextView) view.findViewById(R.id.txt_auto_emp_row_no);
-
+        NetworkImageView image = (NetworkImageView)view.findViewById(R.id.im_auto_emp_row_emp_image) ;
         name.setText(model.getEmpName());
         dept.setText(model.getEmpDept());
         designation.setText(model.getEmpDesignation());
         no.setText(model.getEmpNo());
+       // image.setImageUrl();
+         image.setImageUrl(model.getEmpImage(), Tapplication.getInstance().getImageLoader());
+
         view.setTag(model);
         return view;
     }

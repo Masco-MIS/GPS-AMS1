@@ -10,7 +10,9 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import masco.mis.software.mascoapproval.pojo.Employee;
 
@@ -21,6 +23,7 @@ import static masco.mis.software.mascoapproval.Tapplication.Pref;
  */
 
 public class Data {
+    public static Map<String, Integer> nCount = new HashMap<String, Integer>();
     public static List<Employee> employees = new ArrayList<Employee>();
 
     public static List<Employee> getEmployees() {
@@ -96,5 +99,32 @@ public class Data {
         }
 
 
+    }
+    public static void setNCount(String name,boolean isUp)
+    {
+        if(nCount.containsKey(name))
+        {
+            if(isUp)
+            {
+                nCount.put(name,nCount.get(name)+1);
+            }
+            else
+            {
+                if((nCount.get(name)-1) < 0)
+                {
+                    nCount.put(name,0);
+                }
+                else
+                {
+                    nCount.put(name,nCount.get(name)-1);
+                }
+
+            }
+
+        }
+        else
+        {
+            nCount.put(name,1);
+        }
     }
 }

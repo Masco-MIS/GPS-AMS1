@@ -11,6 +11,7 @@ public class Employee {
     private String EmpDept;
     private String EmpSection;
     private String EmpDesignation;
+    private String EmpImage;
 
     public Employee(String empNo, String empName, String empDesignation) {
         EmpNo = empNo;
@@ -68,5 +69,13 @@ public class Employee {
 
     public void setEmpDesignation(String empDesignation) {
         EmpDesignation = empDesignation;
+    }
+
+    public String getEmpImage() {
+        return EmpImage;
+    }
+
+    public void setEmpImage(String empImage) {
+        EmpImage = empImage;
     }
 }
