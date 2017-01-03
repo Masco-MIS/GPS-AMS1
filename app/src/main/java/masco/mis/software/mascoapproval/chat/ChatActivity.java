@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -65,6 +66,17 @@ public class ChatActivity extends Activity {
                 startActivity(intent);
 
                 //Log.v("arman",String.valueOf(value.emp_Code));
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_chat_newchatmessage);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(),"I'm hit",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Tapplication.getContext(), ChatNewOperationActivity.class);
+                startActivity(intent);
+
             }
         });
 
