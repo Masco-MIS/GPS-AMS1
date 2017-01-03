@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,6 +23,7 @@ import java.util.List;
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
 import masco.mis.software.mascoapproval.auxiliary.Data;
+import masco.mis.software.mascoapproval.auxiliary.Database;
 import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
 import masco.mis.software.mascoapproval.pojo.Employee;
 import masco.mis.software.mascoapproval.pojo.TParam;
@@ -37,7 +39,9 @@ public class ApprovalType extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Tapplication.FullScreen(this);
         setContentView(R.layout.activity_approval_type);
+
 
 //        try {
 //            pDialog = Tapplication.pleaseWait(ApprovalType.this, "Downloading......");
@@ -111,6 +115,7 @@ public class ApprovalType extends Activity {
             }
         });
 
+
         if (Data.getEmployees().size() == 0) {
             List<TParam> params = new ArrayList<>();
             JSONObject json = Tapplication.intiJson(StoredProcedure.sp_get_emp_list, getString(R.string.DB_SCM), params);
@@ -140,7 +145,7 @@ public class ApprovalType extends Activity {
                                 lstData.add(employee);
                             }
 //                            JSONObject s = new Gson().toJson(lstData,lstData.getClass());
-                        //    Tapplication.Pref().edit().putString(Values.pref_emp_List,new Gson().toJson(lstData,lstData.getClass())).apply();
+                            //    Tapplication.Pref().edit().putString(Values.pref_emp_List,new Gson().toJson(lstData,lstData.getClass())).apply();
                             Data.setEmployees(lstData);
                         }
 
@@ -151,6 +156,39 @@ public class ApprovalType extends Activity {
                 }
             }, Data.genericErrorListener(progressDialog, ApprovalType.this)));
         }
+
+        List<TParam> params = new ArrayList<>();
+        params.add(new TParam("@id",Data.getUserID()));
+        JSONObject json = Tapplication.intiJson(StoredProcedure.count_approval_type, Database.SCM, params);
+        Tapplication.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST, ApiGetData, json, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (progressDialog != null) {
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                    Gson Res = new Gson();
+                    List<Employee> lstData = new ArrayList<Employee>();
+                    JSONArray data = response.getJSONArray("data");
+                    //    Toast.makeText(Tapplication.getContext(), data.toString(), Toast.LENGTH_SHORT).show();
+                    if (data.length() > 0) {
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject j = data.getJSONObject(i);
+                            ((TextView)findViewById(R.id.counterValue)).setText(j.getString("COUNT")); //setText(j.getString("COUNT"));
+                        }
+//                            JSONObject s = new Gson().toJson(lstData,lstData.getClass());
+                        //    Tapplication.Pref().edit().putString(Values.pref_emp_List,new Gson().toJson(lstData,lstData.getClass())).apply();
+
+                    }
+
+
+                } catch (Exception e) {
+                    Toast.makeText(ApprovalType.this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, Data.genericErrorListener(progressDialog, ApprovalType.this)));
 
     }
 }

@@ -13,4 +13,5 @@ public class StoredProcedure {
     public static String get_location_of_other = "sp_M_get_location_of_other";
     public static String set_location = "usp_m_set_location";
     public static String set_location_bulk = "usp_m_set_location_with_time";
+    public static String count_approval_type = "sp_m_get_count_approval_type";
 }

@@ -13,12 +13,11 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        />
+        android:layout_height="10dp" />
 
     <fragment
-        android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
         android:id="@+id/frag_root_quickmenu"
+        android:name="masco.mis.software.mascoapproval.QuickMenuFragment"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,49 +37,206 @@
             android:orientation="vertical">
 
 
-            <Button
-                android:id="@+id/btn_approvaltype_pr"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/pencil_button_new"
-                android:gravity="start|center"
-                android:paddingLeft="10dp"
-                android:text="Purchase Requisition"
-                android:textColor="@android:color/white" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_approvaltype_pr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_weight=".65"
+                    android:background="@drawable/pencil_button"
+                    android:elevation="4dp"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:text="purchase requisition"
+                    android:textAlignment="textStart"
+                    android:textColor="#ffff" />
+
+                <TextView
+                    android:id="@+id/counterValue"
+                    android:layout_width="39dp"
+                    android:layout_height="39dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/item_count"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="0"
+                    android:textColor="#FFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+
+                    tools:text="0" />
+
+                <!--<Button-->
+                <!--android:id="@+id/btn_approvaltype_pr"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:background="@drawable/pencil_button_new"-->
+                <!--android:gravity="start|center"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:text="Purchase Requisition"-->
+                <!--android:textColor="@android:color/white" />-->
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:text="asdasdasd" />-->
+            </LinearLayout>
+
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="30dp" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_approvaltype_sr"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/pencil_button_new"
-                android:gravity="start|center"
-                android:paddingLeft="10dp"
-                android:text="Store Requisition"
-                android:textColor="@android:color/white" />
+                <Button
+                    android:id="@+id/btn_approvaltype_sr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_weight=".65"
+                    android:background="@drawable/pencil_button"
+                    android:elevation="4dp"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:text="Store Requisition"
+                    android:textAlignment="textStart"
+                    android:textColor="#ffff" />
+
+                <TextView
+                    android:id="@+id/counter_value_sr"
+                    android:layout_width="39dp"
+                    android:layout_height="39dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/item_count"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="0"
+                    android:textColor="#FFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+
+                    tools:text="0" />
+
+                <!--<Button-->
+                <!--android:id="@+id/btn_approvaltype_pr"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:background="@drawable/pencil_button_new"-->
+                <!--android:gravity="start|center"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:text="Purchase Requisition"-->
+                <!--android:textColor="@android:color/white" />-->
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:text="asdasdasd" />-->
+            </LinearLayout>
+
+
+            <!--<Button-->
+            <!--android:id="@+id/btn_approvaltype_sr"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@drawable/pencil_button_new"-->
+            <!--android:gravity="start|center"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:text="Store Requisition"-->
+            <!--android:textColor="@android:color/white" />-->
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="30dp" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
 
-            <Button
-                android:id="@+id/btn_approvaltype_la"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/pencil_button_new"
-                android:gravity="start|center"
-                android:paddingLeft="10dp"
-                android:text="Leave Approval"
-                android:textColor="@android:color/white" />
+                android:orientation="horizontal">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
+                <Button
+                    android:id="@+id/btn_approvaltype_la"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_weight=".65"
+                    android:background="@drawable/pencil_button"
+                    android:elevation="4dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:text="Store Requisition"
+                    android:textAlignment="textStart"
+                    android:textColor="#ffff" />
+
+                <TextView
+                    android:id="@+id/counter_value_la"
+                    android:layout_width="39dp"
+                    android:layout_height="39dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/item_count"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="0"
+                    android:textColor="#FFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+
+
+                    tools:text="0" />
+
+                <!--<Button-->
+                <!--android:id="@+id/btn_approvaltype_pr"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:background="@drawable/pencil_button_new"-->
+                <!--android:gravity="start|center"-->
+                <!--android:paddingLeft="10dp"-->
+                <!--android:text="Purchase Requisition"-->
+                <!--android:textColor="@android:color/white" />-->
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:text="asdasdasd" />-->
+            </LinearLayout>
+
+
+            <!--<Button-->
+            <!--android:id="@+id/btn_approvaltype_la"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@drawable/pencil_button_new"-->
+            <!--android:gravity="start|center"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:text="Leave Approval"-->
+            <!--android:textColor="@android:color/white" />-->
+
+            <!--<Space-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="30dp" />-->
 
 
         </LinearLayout>
