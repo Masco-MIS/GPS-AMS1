@@ -1,6 +1,7 @@
 package masco.mis.software.mascoapproval.approval;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,7 @@ public class EmpAutoAdapter extends ArrayAdapter<Employee> {
         protected TextView id;
         protected TextView designation;
         protected TextView dept;
+        protected ImageView image;
     }
 
     @Override
@@ -70,12 +73,15 @@ public class EmpAutoAdapter extends ArrayAdapter<Employee> {
             viewHolder.id.setText(values.get(position).getEmpID());
             viewHolder.designation.setText(values.get(position).getEmpDesignation());
             viewHolder.dept.setText(values.get(position).getEmpDept());
+            viewHolder.image = (ImageView)convertView.findViewById(R.id.im_auto_emp_row_emp_image);
+            viewHolder.image.setImageURI(Uri.parse(values.get(position).getEmpImage()));
 
             convertView.setTag(viewHolder);
             convertView.setTag(R.id.txt_auto_emp_row_name, viewHolder.name);
             convertView.setTag(R.id.txt_auto_emp_row_no, viewHolder.id);
             convertView.setTag(R.id.txt_auto_emp_row_designation, viewHolder.designation);
             convertView.setTag(R.id.txt_auto_emp_row_dept, viewHolder.dept);
+            convertView.setTag(R.id.im_auto_emp_row_emp_image,viewHolder.image);
 
 
         } else {
@@ -87,6 +93,7 @@ public class EmpAutoAdapter extends ArrayAdapter<Employee> {
         viewHolder.id.setText(values.get(position).getEmpID());
         viewHolder.designation.setText(values.get(position).getEmpDesignation());
         viewHolder.dept.setText(values.get(position).getEmpDept());
+        viewHolder.image.setImageURI(Uri.parse(values.get(position).getEmpImage()));
         return convertView;
     }
 
