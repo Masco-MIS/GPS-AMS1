@@ -346,9 +346,9 @@ public class LocationTService extends Service implements
                     if (Data.getUserID() != null && Data.getUserID()!="") {
                         EMPIDD = Double.valueOf(Data.getUserID());
                     }
-                    Toast.makeText(LocationTService.this, ""+Double.valueOf(mCurrentLocation.getLatitude()), Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(LocationTService.this, ""+Double.valueOf(mCurrentLocation.getLatitude()), Toast.LENGTH_SHORT).show();
                     long iddd = TDbHelper.insertLocation(TDbHelper.setLocatioContent(String.valueOf(mCurrentLocation.getLatitude()), String.valueOf(mCurrentLocation.getLongitude()), Double.valueOf(new Date().getTime()), Tapplication.ID(), Double.valueOf(EMPIDD)));
-                    Toast.makeText(LocationTService.this, "Inserted " + iddd + " "+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(LocationTService.this, "Inserted " + iddd + " "+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
                 }
             }));
         } catch (Exception e) {
