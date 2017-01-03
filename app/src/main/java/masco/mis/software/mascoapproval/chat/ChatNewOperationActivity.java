@@ -5,12 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.NetworkError;
@@ -32,7 +30,6 @@ import java.util.List;
 
 import masco.mis.software.mascoapproval.R;
 import masco.mis.software.mascoapproval.Tapplication;
-import masco.mis.software.mascoapproval.approval.AutoCompleteAdapter;
 import masco.mis.software.mascoapproval.auxiliary.Data;
 import masco.mis.software.mascoapproval.auxiliary.StoredProcedure;
 import masco.mis.software.mascoapproval.auxiliary.Util;
@@ -102,6 +99,7 @@ public class ChatNewOperationActivity extends Activity {
                                     employee.setEmpName(j.getString("EmpName"));
                                     employee.setEmpDept(j.getString("EmpDept"));
                                     employee.setEmpDesignation(j.getString("EmpDesignation"));
+                                    employee.setEmpImage(j.getString("EmpImage"));
                                     employeeArrayList.add(employee);
                                 }
                             }
@@ -122,7 +120,7 @@ public class ChatNewOperationActivity extends Activity {
         //final Employee tempEmp = new Employee();
 
         auto.setThreshold(1);
-        AutoCompleteAdapter adapter = new AutoCompleteAdapter(ChatNewOperationActivity.this, R.layout.auto_emp_row_item,
+        EmployeeAutoCompleteAdapter adapter = new EmployeeAutoCompleteAdapter(ChatNewOperationActivity.this, R.layout.layout_emp_list,
                 (ArrayList<Employee>) Data.getEmployees());
         auto.setAdapter(adapter);
         auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
