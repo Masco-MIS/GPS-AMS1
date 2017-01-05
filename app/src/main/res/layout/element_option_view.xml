@@ -1,0 +1,30 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/myButton"
+            android:layout_width="65dip"
+            android:layout_height="65dip"
+
+            android:text="dd" />
+
+        <TextView
+            android:id="@+id/textOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/myButton"
+            android:layout_alignTop="@id/myButton"
+            android:background="@drawable/badge_circle"
+            android:text="10"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+</merge>

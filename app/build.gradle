@@ -39,6 +39,6 @@ dependencies {
     compile 'ch.acra:acra:4.9.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'com.android.support:design:25.0.1'
-
+    compile 'me.leolin:ShortcutBadger:1.1.11'
 }
 apply plugin: 'com.google.gms.google-services'

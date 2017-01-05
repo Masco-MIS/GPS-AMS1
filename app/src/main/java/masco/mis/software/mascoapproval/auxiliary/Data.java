@@ -41,6 +41,7 @@ public class Data {
     public static void setEmployees(List<Employee> employees) {
         Data.employees = employees;
     }
+
     public static Response.ErrorListener genericErrorListener(final ProgressDialog pDialog, final Context context) {
         return new Response.ErrorListener() {
 
@@ -80,51 +81,27 @@ public class Data {
 
         };
     }
-    public  static JSONObject LoginData;
-    public  static String getUserID()
-    {
-        try
-        {
-            if (LoginData == null)
-            {
 
-                LoginData = new JSONObject(Pref().getString(Values.pref_login_data,""));
+    public static JSONObject LoginData;
+
+    public static String getUserID() {
+        try {
+            if (LoginData == null) {
+
+                LoginData = new JSONObject(Pref().getString(Values.pref_login_data, ""));
             }
-            return  LoginData.getJSONArray("data").getJSONObject(0).getString("EMP_ID");
+            return LoginData.getJSONArray("data").getJSONObject(0).getString("EMP_ID");
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return "";
         }
 
 
     }
-    public static void setNCount(String name,boolean isUp)
-    {
-        if(nCount.containsKey(name))
-        {
-            if(isUp)
-            {
-                nCount.put(name,nCount.get(name)+1);
-            }
-            else
-            {
-                if((nCount.get(name)-1) < 0)
-                {
-                    nCount.put(name,0);
-                }
-                else
-                {
-                    nCount.put(name,nCount.get(name)-1);
-                }
 
-            }
+    public static void setNCount(String name, int isUp) {
+        nCount.put(name, isUp);
 
-        }
-        else
-        {
-            nCount.put(name,1);
-        }
     }
+
 }

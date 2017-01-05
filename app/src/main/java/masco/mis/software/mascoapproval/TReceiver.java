@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import masco.mis.software.mascoapproval.service.CountTService;
 import masco.mis.software.mascoapproval.service.LocationTService;
 
 public class TReceiver extends BroadcastReceiver {
@@ -17,6 +18,12 @@ public class TReceiver extends BroadcastReceiver {
         // an Intent broadcast.
         try {
             Intent startServiceIntent = new Intent(context, LocationTService.class);
+            context.startService(startServiceIntent);
+        } catch (Exception e) {
+            Toast.makeText(context, "Some error :" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        try {
+            Intent startServiceIntent = new Intent(context, CountTService.class);
             context.startService(startServiceIntent);
         } catch (Exception e) {
             Toast.makeText(context, "Some error :" + e.getMessage(), Toast.LENGTH_SHORT).show();

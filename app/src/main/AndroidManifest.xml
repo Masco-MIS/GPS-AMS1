@@ -83,8 +83,15 @@
         <activity android:name=".approval.OperationActivity" />
         <activity android:name=".chat.ChatActivity" />
         <activity android:name=".chat.ChatOperationActivity" />
-        <activity android:name=".chart.TestChartActivity"></activity>
-        <activity android:name=".chat.ChatNewOperationActivity"></activity>
+        <activity android:name=".chart.TestChartActivity" />
+        <activity android:name=".chat.ChatNewOperationActivity" />
+
+        <service
+            android:name=".service.CountTService"
+            android:enabled="true"
+            android:exported="true" />
+
+
     </application>
 
 </manifest>

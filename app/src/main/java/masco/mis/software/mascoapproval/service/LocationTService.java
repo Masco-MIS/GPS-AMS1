@@ -106,33 +106,6 @@ public class LocationTService extends Service implements
      */
     protected String mLastUpdateTime;
 
-// //   @Override
-//    public void onCreate(Bundle savedInstanceState) {
-////     //   super.onCreate(savedInstanceState);
-////    //    setContentView(R.layout.main_activity);
-////
-////        // Locate the UI widgets.
-////        mStartUpdatesButton = (Button) findViewById(R.id.start_updates_button);
-////        mStopUpdatesButton = (Button) findViewById(R.id.stop_updates_button);
-////        mLatitudeTextView = (TextView) findViewById(R.id.latitude_text);
-////        mLongitudeTextView = (TextView) findViewById(R.id.longitude_text);
-////        mLastUpdateTimeTextView = (TextView) findViewById(R.id.last_update_time_text);
-////
-////        // Set labels.
-////        mLatitudeLabel = getResources().getString(R.string.latitude_label);
-////        mLongitudeLabel = getResources().getString(R.string.longitude_label);
-////        mLastUpdateTimeLabel = getResources().getString(R.string.last_update_time_label);
-//
-//        mRequestingLocationUpdates = false;
-//        mLastUpdateTime = "";
-//
-//        // Update values using data stored in the Bundle.
-//        updateValuesFromBundle(savedInstanceState);
-//
-//        // Kick off the process of building a GoogleApiClient and requesting the LocationServices
-//        // API.
-//        buildGoogleApiClient();
-//    }
 
     /**
      * Updates fields based on data stored in the bundle.
@@ -206,11 +179,10 @@ public class LocationTService extends Service implements
 //
 //        // Sets the fastest rate for active location updates. This interval is exact, and your
 //        // application will never receive updates faster than this value.
-       mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-     //   mLocationRequest.setSmallestDisplacement(10);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        //   mLocationRequest.setSmallestDisplacement(10);
 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
 
 
     }
@@ -279,11 +251,11 @@ public class LocationTService extends Service implements
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                      //  mCurrentLocation = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,)
+                        //  mCurrentLocation = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,)
                     }
                 } else {
                     mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                //    LocationServices.FusedLocationApi.
+                    //    LocationServices.FusedLocationApi.
                 }
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
                 //  updateUI();
@@ -343,12 +315,12 @@ public class LocationTService extends Service implements
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     double EMPIDD = 0;
-                    if (Data.getUserID() != null && Data.getUserID()!="") {
+                    if (Data.getUserID() != null && Data.getUserID() != "") {
                         EMPIDD = Double.valueOf(Data.getUserID());
                     }
-                 //   Toast.makeText(LocationTService.this, ""+Double.valueOf(mCurrentLocation.getLatitude()), Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(LocationTService.this, ""+Double.valueOf(mCurrentLocation.getLatitude()), Toast.LENGTH_SHORT).show();
                     long iddd = TDbHelper.insertLocation(TDbHelper.setLocatioContent(String.valueOf(mCurrentLocation.getLatitude()), String.valueOf(mCurrentLocation.getLongitude()), Double.valueOf(new Date().getTime()), Tapplication.ID(), Double.valueOf(EMPIDD)));
-                 //   Toast.makeText(LocationTService.this, "Inserted " + iddd + " "+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(LocationTService.this, "Inserted " + iddd + " "+mCurrentLocation.getLatitude(), Toast.LENGTH_SHORT).show();
                 }
             }));
         } catch (Exception e) {
@@ -505,8 +477,7 @@ public class LocationTService extends Service implements
                     }
                     cursor.close();
 
-                    if (tParamListS.size()>0)
-                    {
+                    if (tParamListS.size() > 0) {
                         TRequest tRequest = new TRequest();
                         tRequest.setDb(Database.SCM);
                         tRequest.setSp(StoredProcedure.set_location_bulk);

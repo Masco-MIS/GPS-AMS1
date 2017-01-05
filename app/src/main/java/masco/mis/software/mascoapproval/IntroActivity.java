@@ -10,7 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
+import masco.mis.software.mascoapproval.service.CountTService;
 import masco.mis.software.mascoapproval.service.LocationTService;
 
 public class IntroActivity extends Activity {
@@ -21,10 +23,28 @@ public class IntroActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        try
+        {
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        try
+        {
+            startService(new Intent(this, CountTService.class));
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "failed to start the service "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         if (Build.VERSION.SDK_INT < 23) {
             Intent intent = new Intent(this, LocationTService.class);
-            startService(intent);
+            if (!isServiceRunning(LocationTService.class)) {
+                startService(intent);
+            }
         } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, per);

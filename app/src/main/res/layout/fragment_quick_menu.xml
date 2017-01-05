@@ -2,39 +2,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#5C6BC0"
     android:gravity="center|top"
     android:orientation="horizontal"
-    android:background="#5C6BC0"
-    tools:context="masco.mis.software.mascoapproval.QuickMenuFragment"
-    >
+    tools:context="masco.mis.software.mascoapproval.QuickMenuFragment">
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_home_message"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_message" />
+        android:background="@drawable/ic_message"
+        android:text="2"
+        android:textSize="20sp"
+        android:textColor="#FFD700" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_home_approval"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_approval" />
+        android:background="@drawable/ic_approval" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_home_voicecall"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_voicecall" />
+        android:background="@drawable/ic_voicecall" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_home_chart"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_chart" />
+        android:background="@drawable/ic_chart" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btn_home_operation"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_operation" />
+        android:background="@drawable/ic_operation" />
 </LinearLayout>

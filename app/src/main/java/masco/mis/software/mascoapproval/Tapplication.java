@@ -22,9 +22,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-
 import masco.mis.software.mascoapproval.DB.TDbOpenHelper;
-
 import masco.mis.software.mascoapproval.auxiliary.LruBitmapCache;
 import masco.mis.software.mascoapproval.pojo.TParam;
 import masco.mis.software.mascoapproval.pojo.TRequest;
@@ -177,6 +175,7 @@ public class Tapplication extends Application {
         }
         return this.mImageLoader;
     }
+
 
 
 }
